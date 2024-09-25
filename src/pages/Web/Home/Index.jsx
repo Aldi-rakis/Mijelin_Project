@@ -1,33 +1,22 @@
 
 
-import icon from '../../assets/ph_bell (1).png'
-import Navigation from '../../components/Navigation';
+import Navigation from '../../../components/Navigation';
 // import './App.css'
-import Routes from '../../routes/routes';
+import React from 'react';
+import Userheader from '../../../components/Userheader';
+// import Routes from '../../routes/routes';
 
 function Home() {
 
 
   return (
-    <>
-      <Routes />
+    <React.Fragment>
+     
       {/* <div className='max-w-[550px] mx-auto bg-[linear-gradient(to_top,_#FFFFFF,_#DEE7F1_50%,_#B0C4DE_100%)] shadow-lg h-[100vh] '> */}
-      <div className='max-w-[550px] mx-auto bg-[#FFFFFF] shadow-xl h-auto pb-[100px] '>
+      <div className='max-w-[550px] mx-auto bg-[#FFFFFF] shadow-xl h-auto pb-[100px]'>
 
         {/* Profile & Notif */}
-        <div className='flex justify-between pt-5 px-5'>
-          <div className='flex'>
-            <img className='w-[40px] h-[40px]' src="https://cdn-icons-png.flaticon.com/512/147/147144.png" alt="" />
-            <div className='ml-3'>
-              <h1 className=' text-[24px] '> HI, Alan </h1>
-              <p className='text-[#8696BB] text-[15px]'>Selamat Datang di Mijelin</p>
-            </div>
-          </div>
-
-          <div>
-            <img className='w-[40px]' src={icon} alt="" />
-          </div>
-        </div>
+       <Userheader />
 
         {/* Poin */}
         <div className=' flex mx-5 p-5 mt-5 rounded-xl text-white justify-between  bg-[#2D5D83]'>
@@ -118,12 +107,13 @@ function Home() {
                 </div>
               </div>     
         </div>
-
-       <Navigation />
+        <Navigation />
+       
 
       </div>
 
-    </>
+      </React.Fragment>
+
   )
 }
 
