@@ -1,0 +1,14 @@
+@font-face {
+  font-family: 'noir pro';
+  src: url('/src/assets/font/NoirPro-Medium.ttf');
+}
+
+
+
+#root {
+   font-family: 'noir pro';
+  margin: 0;
+
+  margin: 0;
+}
+
