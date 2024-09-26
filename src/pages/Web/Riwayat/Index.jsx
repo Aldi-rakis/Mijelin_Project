@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Navigation from '../../../components/Navigation';
+import img from '../../../assets/back_arrow.png';
 
 const Riwayat = () => {
     const [activeTab, setActiveTab] = useState('setor');
@@ -7,7 +8,8 @@ const Riwayat = () => {
     return (
         <div className='max-w-[550px] mx-auto bg-[#FFFFFF] shadow-xl h-[100vh] pb-[100px]'>
             <div>
-            <div className='text-center mt-3'>
+            <div className='text-center flex justify-between w-[60%] items-start mt-3'>
+                <img className=' w-[40px]  ml-5 h-[40px] bg-white rounded-lg p-1 shadow-sm border' src={img} alt="" />
                 <h1 className='text-[25px] font-semibold'>Riwayat</h1>
             </div>
 
@@ -17,18 +19,18 @@ const Riwayat = () => {
                     className={`cursor-pointer ${activeTab === 'setor' ? 'font-semibold' : ''}`}
                 >
                     <p>Setor Mijel</p>
-                    {activeTab === 'setor' && <div className='border-b-2 border-[#2D5D83] w-full mt-1' />}
+                    {activeTab == 'setor' && <div className='border-b-2 border-[#2D5D83] w-full mt-1' />}
                 </div>
                 <div 
                     onClick={() => setActiveTab('penukaran')} 
                     className={`cursor-pointer ${activeTab === 'penukaran' ? 'font-semibold' : ''}`}
                 >
                     <p>Penukaran Mijel</p>
-                    {activeTab === 'penukaran' && <div className='border-b-2 border-[#2D5D83] w-full mt-1' />}
+                    {activeTab == 'penukaran' && <div className='border-b-2 border-[#2D5D83] w-full mt-1' />}
                 </div>
             </div>
             {/* Riwayat Setor */}
-            {activeTab === 'setor' && (
+            {activeTab == 'setor' && (
                 <div className='card-riwayat setor-mijel mt-5 flex flex-col p-5'>
                     {/** Card Setor - bisa diisi dengan map jika ada banyak data */}
                     <div className='item-card-riwayat bg-white shadow-lg rounded-lg flex flex-col p-3 mt-2'>
@@ -90,7 +92,7 @@ const Riwayat = () => {
             )}
 
             {/* Riwayat Penukaran */}
-            {activeTab === 'penukaran' && (
+            {activeTab == 'penukaran' && (
                 <div className='card-riwayat penukaran-mijel mt-5 flex flex-col p-5'>
                     {/** Card Penukaran - bisa diisi dengan map jika ada banyak data */}
                     <div className='item-card-riwayat bg-white shadow-lg rounded-lg flex flex-col p-3 mt-2'>

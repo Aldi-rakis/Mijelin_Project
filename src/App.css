@@ -12,3 +12,11 @@
   margin: 0;
 }
 
+/* CSS untuk menyembunyikan scrollbar */
+.hide-scrollbar {
+  overflow-y: scroll; /* Untuk memastikan konten bisa discroll */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Menyembunyikan scrollbar di WebKit */
+}

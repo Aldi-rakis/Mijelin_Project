@@ -15,6 +15,9 @@ import Home from '../pages/Web/Home/Index.jsx';
 //import view Home
 import Riwayat from '../pages/Web/Riwayat/Index.jsx';
 
+//import view Home
+import Tukar from '../pages/Web/Tukar/Index.jsx';
+
 
 function RoutesIndex() {
     return (
@@ -24,8 +27,11 @@ function RoutesIndex() {
              <Route path="/" element={<Home />} />
 
              
-             {/* route "Homepage" */}
+             {/* route "Riwayat" */}
              <Route path="/riwayat" element={<Riwayat />} />
+
+             {/* route "Tukar" */}
+             <Route path="/tukar" element={<Tukar />} />
 
 
             {/* route "/admin/login" */}
