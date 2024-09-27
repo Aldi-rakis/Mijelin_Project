@@ -1,14 +1,34 @@
-import React from 'react'
+import React, { useState } from 'react'
 import minyak from '../../../assets/minyak.png'
 import voucer from '../../../assets/voucer.png'
 import Navigation from '../../../components/Navigation'
 
 
 const Index = () => {
+
+  const [category, setCategory] = useState('Semua'); // State untuk melacak kategori yang dipilih
+
+
+    // Data hadiah
+    const items = [
+      { id: 1, name: 'Minyak Goreng', description: 'Lorem ipsum dolor sit psu psu psum dolor  psu psum dolor  psu psum dolor sit ametsit ame', points: '10.000 poin', image: minyak, category: 'Sembako' },
+      { id: 2, name: 'Voucher', description: 'Lorem ipsum dolor sit amet...', points: '10.000 poin', image: voucer, category: 'Voucher' },
+      { id: 3, name: 'Voucher', description: 'Lorem ipsum dolor sit amet...', points: '10.000 poin', image: voucer, category: 'Voucher' },
+      { id: 4, name: 'Minyak Goreng', description: 'Lorem ipsum dolor sit amet...', points: '10.000 poin', image: minyak, category: 'Sembako' }
+      // Tambahkan lebih banyak item jika diperlukan
+    ];
+
+    // Fungsi untuk menampilkan item berdasarkan kategori yang dipilih
+  const filteredItems = items.filter((item) => {
+    if (category === 'Semua') return true; // Tampilkan semua item jika kpsum dolor sitategori adalah 'Semua'
+    return item.category === category; // Filter berdasarkan kategori
+  });
+
+  
   return (
     <div className='max-w-[550px] justify-center items-center mx-auto bg-[#FFFFFF]  shadow-xl h-[100%] pb-[100px]'>
 
-      <div className='bg-yellow-200 h-[180px] fixed bg-[url("../../src/assets/bg-banner.png")] w-full bg-center bg-cover relative'>
+      <div className='bg-yellow-200 h-[180px]  bg-[url("../../src/assets/bg-banner.png")] w-full bg-center bg-cover relative'>
         <div className='text-center flex justify-center items-start pt-3 h-6'>
           <img className='w-[40px] left-0 absolute ml-5 h-[40px] bg-white rounded-lg p-1 shadow-sm border' src='../src/assets/back_arrow.png' alt="" />
           <h1 className='text-[25px] font-semibold text-[#fff]'>Tukar</h1>
@@ -36,81 +56,32 @@ const Index = () => {
       {/* card hadiah */}
 
       <div className='card-hadiah mt-[150px] flex flex-col items-center px-3'>
-  <div className='card-item flex items-center justify-center mb-8'>
-    <button className='w-[100px] h-[50px] mx-2 bg-[#2D5D83] text-white rounded-2xl font-normal'>Semua</button>
-    <button className='w-[100px] h-[50px] mx-2 bg-[#ffffff] text-black border rounded-2xl font-normal'>Voucher</button>
-    <button className='w-[100px] h-[50px] mx-2 bg-[#ffffff] text-black border rounded-2xl font-normal'>Sembako</button>
-  </div>  
+      {/* Button untuk memilih kategori */}
+      <div className='card-item flex items-center justify-center mb-8'>
+        <button onClick={() => setCategory('Semua')} className={`w-[100px] h-[50px] mx-2 ${category === 'Semua' ? 'bg-[#2D5D83] text-white' : 'bg-[#ffffff] text-black'} rounded-2xl font-normal`}>Semua</button>
+        <button onClick={() => setCategory('Voucher')} className={`w-[100px] h-[50px] mx-2 ${category === 'Voucher' ? 'bg-[#2D5D83] text-white' : 'bg-[#ffffff] text-black'} rounded-2xl font-normal`}>Voucher</button>
+        <button onClick={() => setCategory('Sembako')} className={`w-[100px] h-[50px] mx-2 ${category === 'Sembako' ? 'bg-[#2D5D83] text-white' : 'bg-[#ffffff] text-black'} rounded-2xl font-normal`}>Sembako</button>
+      </div>  
 
-  <div className='overflow-y-auto hide-scrollbar  max-h-[400px] w-full'>
-    <div className='card-item flex items-center gap-5 justify-center mt-5 bg-white shadow-lg rounded-2xl max-w-max p-2 my-5 mx-10'>
-      <div className='image w-[250px]'>
-        <img className='object-cover' src={minyak} alt="minyak" />
+      {/* Menampilkan item berdasarkan kategori yang dipilih */}
+      <div className='overflow-y-auto hide-scrollbar max-h-[400px] w-full'>
+        {filteredItems.map((item) => (
+          <div key={item.id} className='card-item flex items-center gap-1 justify-center mt-5 bg-white shadow-lg rounded-2xl max-w-max p-2 my-5 mx-auto'>
+            <div className='image w-[130px] h-[100px]'>
+              <img className='object-cover w-full h-full' src={item.image} alt={item.name} />
+            </div>
+
+            <div className='desc w-[200px] ml-5'>
+              <p className='text-[16px] font-semibold'>{item.name}</p>
+              <p className='text-[14px]'>{item.description}</p>
+              <p className='text-[15px] font-semibold'>{item.points}</p>
+            </div>
+          </div>
+        ))}
       </div>
 
-      <div className='desc'>
-        <p className='text-[16px] font-semibold'>Minyak Goreng</p>
-        <p className='text-[14px]'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus, assumenda!</p>
-        <p className='text-[15px] font-semibold'>10.000 poin</p>
-      </div>
+     
     </div>
-
-    <div className='card-item flex items-center gap-5 justify-center mt-5 bg-white shadow-lg rounded-2xl max-w-max p-2 my-5 mx-10'>
-      <div className='image w-[250px]'>
-        <img className='object-cover' src={minyak} alt="minyak" />
-      </div>
-
-      <div className='desc'>
-        <p className='text-[16px] font-semibold'>Minyak Goreng</p>
-        <p className='text-[14px]'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus, assumenda!</p>
-        <p className='text-[15px] font-semibold'>10.000 poin</p>
-      </div>
-    </div>
-
-
-    <div className='card-item flex items-center gap-5 justify-center mt-5 bg-white shadow-lg rounded-2xl max-w-max p-2 my-5 mx-10'>
-      <div className='image w-[250px]'>
-        <img className='object-cover' src={voucer} alt="voucer" />
-      </div>
-
-      <div className='desc'>
-        <p className='text-[16px] font-semibold'>Voucher</p>
-        <p className='text-[14px]'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus, assumenda!</p>
-        <p className='text-[15px] font-semibold'>10.000 poin</p>
-      </div>
-    </div>
-
-    <div className='card-item flex items-center gap-5 justify-center mt-5 bg-white shadow-lg rounded-2xl max-w-max p-2 my-5 mx-10'>
-      <div className='image w-[250px]'>
-        <img className='object-cover' src={voucer} alt="voucer" />
-      </div>
-
-      <div className='desc'>
-        <p className='text-[16px] font-semibold'>Voucher</p>
-        <p className='text-[14px]'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus, assumenda!</p>
-        <p className='text-[15px] font-semibold'>10.000 poin</p>
-      </div>
-    </div>
-
-    <div className='card-item flex items-center gap-5 justify-center mt-5 bg-white shadow-lg rounded-2xl max-w-max p-2 my-5 mx-10'>
-      <div className='image w-[250px]'>
-        <img className='object-cover' src={voucer} alt="voucer" />
-      </div>
-
-      <div className='desc'>
-        <p className='text-[16px] font-semibold'>Voucher</p>
-        <p className='text-[14px]'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus, assumenda!</p>
-        <p className='text-[15px] font-semibold'>10.000 poin</p>
-      </div>
-    </div>
-
-    {/* Tambahkan lebih banyak card-item di sini */}
-  
-  </div>
-  
-    
-</div>
-
 
       <Navigation />
 

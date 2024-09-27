@@ -38,7 +38,7 @@ const Navigation = () => {
 
     return (
         <div className='Navigation-bar'>
-            <div className="fixed z-50 h-16 max-w-[550px] justify-center items-center mx-auto bg-white shadow-xl -translate-x-1/2 bg-white border border-gray-200 w-[100%] rounded-md  bottom-0 left-1/2">
+            <div className="fixed z-50 h-16 max-w-[550px] justify-center items-center mx-auto shadow-xl -translate-x-1/2 bg-white border border-gray-200 w-[100%] rounded-md  bottom-0 left-1/2">
                 <div className="grid h-full max-w-lg grid-cols-5 mx-auto">
                     <button
                         onClick={handleToHome}
