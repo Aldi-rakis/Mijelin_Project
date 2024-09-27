@@ -1,21 +1,29 @@
-import React, { useState } from 'react'
+import React, { useState,  } from 'react'
 import datadiri from '../../../assets/datadiri.png'
 import bantuan from '../../../assets/bantuan.png'
 import alamat from '../../../assets/alamat.png'
 import pengaturan from '../../../assets/pengaturan.png'
 import Navigation from '../../../components/Navigation'
+import { useNavigate } from 'react-router-dom';
+
 
 const Index = () => {
+
+    const navigate = useNavigate();
+
+    const goBack = () => {
+        navigate(-1);  // -1 berarti kembali ke halaman sebelumnya
+    };
     return (
         <div className='max-w-[550px] justify-center items-center mx-auto bg-[#FFFFFF]  shadow-xl h-[100%]  pb-[150px]'>
 
             <div className='bg-yellow-200 h-[180px]  bg-[url("../../src/assets/bg-banner.png")] w-full bg-center bg-cover relative'>
                 <div className='text-center flex justify-center items-start pt-3 h-6'>
-                    <a href="">
+                    <a onClick={goBack}>
                     <img className='w-[40px] left-0 absolute ml-5 h-[40px] bg-white rounded-lg p-1 shadow-sm border' src='../src/assets/back_arrow.png' alt="" />
 
                     </a>
-                    <h1 className='text-[25px] font-semibold text-[#fff]'>Tukar</h1>
+                    <h1 className='text-[25px] font-semibold text-[#fff]'>Profil</h1>
                 </div>
 
                 {/* Card profile */}

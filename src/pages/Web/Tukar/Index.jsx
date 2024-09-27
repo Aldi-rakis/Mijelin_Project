@@ -2,11 +2,21 @@ import React, { useState } from 'react'
 import minyak from '../../../assets/minyak.png'
 import voucer from '../../../assets/voucer.png'
 import Navigation from '../../../components/Navigation'
-
+import { useNavigate } from 'react-router-dom'
 
 const Index = () => {
 
   const [category, setCategory] = useState('Semua'); // State untuk melacak kategori yang dipilih
+
+  const navigate = useNavigate();
+
+  const goBack = () => {
+    navigate(-1);
+  }
+
+  const handletodetail = () => {
+    navigate('/Tukar/Detail');
+  }
 
 
     // Data hadiah
@@ -24,13 +34,15 @@ const Index = () => {
     return item.category === category; // Filter berdasarkan kategori
   });
 
+ 
+
   
   return (
     <div className='max-w-[550px] justify-center items-center mx-auto bg-[#FFFFFF]  shadow-xl h-[100%] pb-[100px]'>
 
       <div className='bg-yellow-200 h-[180px]  bg-[url("../../src/assets/bg-banner.png")] w-full bg-center bg-cover relative'>
         <div className='text-center flex justify-center items-start pt-3 h-6'>
-          <img className='w-[40px] left-0 absolute ml-5 h-[40px] bg-white rounded-lg p-1 shadow-sm border' src='../src/assets/back_arrow.png' alt="" />
+          <img onClick={goBack} className='w-[40px] left-0 absolute ml-5 h-[40px] bg-white rounded-lg p-1 shadow-sm border' src='../src/assets/back_arrow.png' alt="" />
           <h1 className='text-[25px] font-semibold text-[#fff]'>Tukar</h1>
         </div>
 
@@ -65,20 +77,25 @@ const Index = () => {
 
       {/* Menampilkan item berdasarkan kategori yang dipilih */}
       <div className='overflow-y-auto hide-scrollbar max-h-[400px] w-full'>
-        {filteredItems.map((item) => (
-          <div key={item.id} className='card-item flex items-center gap-1 justify-center mt-5 bg-white shadow-lg rounded-2xl max-w-max p-2 my-5 mx-auto'>
-            <div className='image w-[130px] h-[100px]'>
-              <img className='object-cover w-full h-full' src={item.image} alt={item.name} />
-            </div>
-
-            <div className='desc w-[200px] ml-5'>
-              <p className='text-[16px] font-semibold'>{item.name}</p>
-              <p className='text-[14px]'>{item.description}</p>
-              <p className='text-[15px] font-semibold'>{item.points}</p>
-            </div>
-          </div>
-        ))}
+  {filteredItems.map((item) => (
+    <div
+    onClick={handletodetail}
+      key={item.id}
+      className='card-item flex items-center gap-1 justify-center mt-5 bg-white shadow-lg rounded-2xl max-w-max p-2 my-5 mx-auto hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105'
+    >
+      <div className='image w-[130px] h-[100px]'>
+        <img className='object-cover w-full h-full' src={item.image} alt={item.name} />
       </div>
+
+      <div className='desc w-[200px] ml-5'>
+        <p className='text-[16px] font-semibold'>{item.name}</p>
+        <p className='text-[14px]'>{item.description}</p>
+        <p className='text-[15px] font-semibold'>{item.points}</p>
+      </div>
+    </div>
+  ))}
+</div>
+
 
      
     </div>

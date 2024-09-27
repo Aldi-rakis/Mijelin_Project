@@ -1,13 +1,19 @@
 import React from 'react'
 import Navigation from '../../../components/Navigation'
+import { useNavigate } from 'react-router-dom';
 
 const Datadiri = () => {
+    const navigate = useNavigate();
+
+    const goBack = () => {
+        navigate(-1);  // -1 berarti kembali ke halaman sebelumnya
+    };
     return (
         <div className='max-w-[550px] justify-center items-center mx-auto bg-[#FFFFFF]  shadow-xl h-[100%]  pb-[150px]'>
 
-            <div className='bg-yellow-200 h-[180px]  bg-[url("../../src/assets/bg-banner.png")] w-full bg-center bg-cover relative'>
+            <div className=' h-[180px]  bg-[url("../../src/assets/bg-banner.png")] w-full bg-center bg-cover relative'>
                 <div className='text-center flex justify-center items-start pt-3 h-6'>
-                    <a href="">
+                    <a onClick={goBack} >
                         <img className='w-[40px] left-0 absolute ml-5 h-[40px] bg-white rounded-lg p-1 shadow-sm border' src='../src/assets/back_arrow.png' alt="" />
 
                     </a>
@@ -100,7 +106,7 @@ const Datadiri = () => {
                     {/* <!-- NIK --> */}
                     <div className="relative z-0 w-full mb-5 group">
                         <input
-                            type="text"
+                            type="number"
                             name="floating_nik"
                             id="floating_nik"
                             className="block py-2.5 px-0 w-full font-medium text-md text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-[#8696BB] focus:outline-none focus:ring-0 focus:border-[#8696BB] peer"

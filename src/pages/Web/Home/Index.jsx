@@ -3,6 +3,7 @@ import Navigation from "../../../components/Navigation";
 import React from "react";
 import Userheader from "../../../components/Userheader";
 // import Routes from '../../routes/routes';
+import { Link } from 'react-router-dom'
 
 function Home() {
   return (
@@ -14,29 +15,38 @@ function Home() {
 
         {/* Poin */}
         <div className=" flex mx-5 p-5 mt-5 rounded-xl text-white justify-between  bg-[#2D5D83]">
+         
           <div className="p-2 items-start">
             <p>Total poin</p>
             <p className="text-[25px] font-bold">36.000</p>
           </div>
+         
 
           <div className="flex gap-12 max-sm:gap-6">
-            <div className="flex flex-col items-center    ">
-              <img
-                className="w-[70px] max-sm:w-[50px] "
-                src="../src/assets/icon (1).png"
-                alt=""
-              />
-              <p className="text-center text-sm">Tukar poin</p>
-            </div>
+            <Link to={`/tukar`}>
+            <div className="flex flex-col items-center     ">
+                  <img
+                    className="w-[70px] max-sm:w-[50px] "
+                    src="../src/assets/icon (1).png"
+                    alt=""
+                  />
+                  <p className="text-center text-sm">Tukar poin</p>
+                </div>
 
-            <div className="flex flex-col items-center">
-              <img
-                className="w-[70px] max-sm:w-[50px]"
-                src="../src/assets/icon (2).png"
-                alt=""
-              />
-              <p className="text-center text-sm">Transaksi</p>
-            </div>
+            </Link>
+              
+              <Link to={`/riwayat`}>
+              <div className="flex flex-col items-center">
+                  <img
+                    className="w-[70px] max-sm:w-[50px]"
+                    src="../src/assets/icon (2).png"
+                    alt=""
+                  />
+                  <p className="text-center text-sm">Transaksi</p>
+                </div>
+              
+              </Link>
+                
           </div>
         </div>
 
@@ -58,12 +68,13 @@ function Home() {
         </div>
 
         {/* edukasi   */}
-        <div className="p-5 flex flex-col">
+        <div className=" p-5 flex flex-col">
           <div className="flex justify-between">
-            <p className="text-[20px] ">jadwal jemput</p>
+            <p className="text-[20px] ">Edukasi</p>
             <p className="text-[#8696BB]">lihat semua</p>
           </div>
 
+          <div className="card-edukasi pb-[50px] overflow-y-auto  max-h-[400px] ">
           <div className="card-edukasi flex flex-col w-full  mt-2 rounded-xl justify-center m-auto items-center  bg-[#FFFFFF] ">
                 <div className="flex bg-white shadow-2xl rounded-lg mt-2">
                   <div className="w-[150px] h-[1`px] min-xl:w-[150px] m-2 ">
@@ -132,6 +143,55 @@ function Home() {
               </div>
             </div>
           </div>
+
+          <div className="card-edukasi flex flex-col w-full mt-2 rounded-xl justify-center m-auto items-center  bg-[#FFFFFF] ">
+            <div className="flex bg-white shadow-2xl rounded-lg ">
+              <div className="w-[150px] h-[1`px] min-xl:w-[150px] m-2 ">
+                <img
+                  className=" rounded-lg bg-cover"
+                  src="../src/assets/img_edukasi.png"
+                  alt=""
+                />
+              </div>
+
+              <div className="px-3 mt-4 flex flex-col justify-between">
+                <p className="text-[13px]">
+                  Bahaya Minyak Jelantah Bagi Lingkungan
+                </p>
+
+                <p className="text-[12px] ">
+                  {" "}
+                  Detik.com <span> Sep 9, 2022</span>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="card-edukasi flex flex-col w-full mt-2 rounded-xl justify-center m-auto items-center  bg-[#FFFFFF] ">
+            <div className="flex bg-white shadow-2xl rounded-lg ">
+              <div className="w-[150px] h-[1`px] min-xl:w-[150px] m-2 ">
+                <img
+                  className=" rounded-lg bg-cover"
+                  src="../src/assets/img_edukasi.png"
+                  alt=""
+                />
+              </div>
+
+              <div className="px-3 mt-4 flex flex-col justify-between">
+                <p className="text-[13px]">
+                  Bahaya Minyak Jelantah Bagi Lingkungan
+                </p>
+
+                <p className="text-[12px] ">
+                  {" "}
+                  Detik.com <span> Sep 9, 2022</span>
+                </p>
+              </div>
+            </div>
+          </div>
+          </div>
+
+          
         </div>
         <Navigation />
       </div>
