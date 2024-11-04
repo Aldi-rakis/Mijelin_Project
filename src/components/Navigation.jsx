@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import icontengah from '../assets/motorbike.png';
 import riwayat from '../assets/riwayat.png';
 import riwayatHover from '../assets/riwayat-hover.png';
@@ -30,6 +31,11 @@ const Navigation = () => {
     const handleToProfile = () => {
         navigate('/profile'); // navigate to profile
     };
+
+    const handleToJemput = () => {
+        navigate('/jemput'); // navigate to profile
+    };
+
 
     const [isRiwayatHovered, setIsRiwayatHovered] = useState(false);
     const [isHomeHovered, setIsHomeHovered] = useState(false);
@@ -74,8 +80,17 @@ const Navigation = () => {
                     </button>
 
                     <div className="relative flex items-center justify-center">
-                        <div className="absolute  w-20 h-20 -top-10  bg-gradient-to-r from-[#26CBFF] to-[#6980FD]  rounded-full border-4 "></div>
-                        <img className='absolute -top-6 z-10 inline-flex items-center justify-center w-12 h-12 font-medium  focus:ring-4 focus:ring-blue-300 focus:outline-none dark:focus:ring-blue-800' src={icontengah} alt="" />
+                        <div className="absolute  w-20 h-20 -top-10  bg-gradient-to-r from-[#26CBFF] to-[#6980FD]  rounded-full border-4 ">
+
+                            
+                        </div>
+
+                        <Link to="/jemput" className='text-decoration-none justify-center flex'>
+                        <img onClick={handleToJemput} className='absolute -top-6 z-10 inline-flex items-center justify-center w-12 h-12 font-medium  focus:ring-4 focus:ring-blue-300 focus:outline-none dark:focus:ring-blue-800' src={icontengah} alt="" />
+
+                        </Link>
+                       
+                       
                         {/* <button
                 data-tooltip-target="tooltip-new"
                 type="button"
