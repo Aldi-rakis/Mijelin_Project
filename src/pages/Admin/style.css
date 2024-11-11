@@ -1,0 +1,15 @@
+.content-preview ul, .content-preview ol {
+    margin-left: 20px; /* Memberikan margin untuk tampilan lebih baik */
+    padding-left: 20px; /* Jarak bullet dari tepi kiri */
+    list-style-type: disc; /* Tipe list (bisa diubah ke decimal untuk ordered list) */
+  }
+  .content-preview li {
+    margin-bottom: 5px;
+    font-weight: bold; /* Atur jika ingin tebal */
+  }
+
+  .content-preview ol {
+    list-style-type: decimal; /* Menampilkan angka */
+    margin-left: 20px; /* Atur margin jika dibutuhkan */
+    padding-left: 20px;
+  }

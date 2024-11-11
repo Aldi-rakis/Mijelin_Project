@@ -82,7 +82,7 @@ const Index = () => {
 
                 <div className='card-Poin relative w-[400px] max-sm:w-[300px] max-md:h-[150px] px-[20px] max-sm:top-[50%] top-[60%] left-1/2 transform -translate-x-1/2 bg-[#ffffff] shadow-lg rounded-xl border-yellow-200 z-10'>
                     <div className='absolute -top-[40px] left-1/2 transform -translate-x-1/2 w-[80px] h-[80px] rounded-full border-4 border-white bg-gray-200'>
-                        <img className='w-full h-full object-cover rounded-full' src="https://cdn-icons-png.flaticon.com/512/147/147144.png" alt="Profile Icon" />
+                        <img className='w-full h-full object-cover rounded-full' src={userData.image_profile} alt="Profile Icon" />
                     </div>
 
                     <div className='w-full p-3 pl-5 justify-center items-center flex pt-[40px]'>

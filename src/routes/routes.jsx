@@ -35,11 +35,15 @@ import Alamat from '../pages/Web/Profile/Alamat.jsx';
 
 import Jemput from '../pages/Web/Jemput/Index.jsx';
 import Berita from '../pages/Web/Edukasi/Index.jsx'; 
+import Beritadetail from '../pages/Web/Edukasi/Detail.jsx'; 
+
 
 import Loginindex from '../pages/Web/Login/Index.jsx';
 import Login from '../pages/Web/Login/login.jsx';
 import Register from "../pages/Web/Login/Register.jsx";
 import PrivateRoute from '../routes/PrivateRoute.jsx';
+import NewsEditor from "../pages/Admin/BeritaAdmin.jsx";
+import Ticketing from "../pages/Admin/ticketing.jsx";
 
 
 function RoutesIndex() {
@@ -54,6 +58,9 @@ function RoutesIndex() {
         
            {/* route "Riwayat" */}
            <Route path="/berita" element={<Berita />} />
+
+           {/* route "Riwayat" */}
+           <Route path="/berita/detail" element={<Beritadetail />} />
 
 
         {/* Halaman yang dilindungi oleh PrivateRoute */}
@@ -102,6 +109,14 @@ function RoutesIndex() {
 
             {/* route "/admin/login" */}
             <Route path="/admin/login" element={<Alamat />} />
+
+              {/* route "/admin/login" */}
+              <Route path="/admin/berita" element={<NewsEditor />} />
+
+               {/* route "/admin/login" */}
+               <Route path="/admin/tiket" element={<Ticketing/>} />
+
+              
 
 
             

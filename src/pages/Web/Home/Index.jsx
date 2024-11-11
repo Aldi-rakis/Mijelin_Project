@@ -36,7 +36,9 @@ function Home() {
         <div className=" p-5 flex flex-col">
           <div className="flex justify-between">
             <p className="text-[20px] ">Edukasi</p>
-            <p className="text-[#8696BB]">lihat semua</p>
+            <Link to={'/berita'}>          
+              <p className="text-[#8696BB]">lihat semua</p>
+            </Link>
           </div>
 
           <div className="card-edukasi pb-[50px] overflow-y-auto  max-h-[400px] ">
