@@ -60,7 +60,7 @@ function RoutesIndex() {
            <Route path="/berita" element={<Berita />} />
 
            {/* route "Riwayat" */}
-           <Route path="/berita/detail" element={<Beritadetail />} />
+           <Route path="/berita/:id" element={<Beritadetail />} />
 
 
         {/* Halaman yang dilindungi oleh PrivateRoute */}
@@ -105,6 +105,9 @@ function RoutesIndex() {
 
                     {/* route "Alamat" */}
                     <Route path="/profile/alamat/:nik" element={<Alamat />} />
+
+
+
 
 
             {/* route "/admin/login" */}
