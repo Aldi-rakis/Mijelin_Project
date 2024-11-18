@@ -10,7 +10,7 @@ function Home() {
   return (
     <React.Fragment>
       {/* <div className='max-w-[550px] mx-auto bg-[linear-gradient(to_top,_#FFFFFF,_#DEE7F1_50%,_#B0C4DE_100%)] shadow-lg h-[100vh] '> */}
-      <div className="max-w-[550px] mx-auto bg-[#FFFFFF] shadow-xl h-auto pb-[100px]">
+      <div className="max-w-[550px] mx-auto bg-[#FFFFFF] shadow-xl min-h-[100vh] pb-[100px]">
         {/* Profile & Notif */}
         <Userheader />
 

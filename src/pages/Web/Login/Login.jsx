@@ -58,6 +58,7 @@ const Login = () => {
 
                 // Simpan token di local storage
                 localStorage.setItem('token', token);
+                localStorage.setItem('uuid', user.uuid);
                 localStorage.setItem('nik', user.nik);
 
                 Swal.fire({

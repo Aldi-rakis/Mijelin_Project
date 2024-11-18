@@ -1,90 +1,52 @@
 import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import Navigation from '../../../components/Navigation';
 import img from '../../../assets/back_arrow.png';
 import AOS from 'aos';
-import axios from 'axios';
 import 'aos/dist/aos.css';
 import dayjs from 'dayjs';
-import 'dayjs/locale/id'; // Import locale Indonesia
+import 'dayjs/locale/id';
+import useRiwayatStore from '../../../components/store/RiwayatStore';
+import LoadingLottie from '../../../components/loadingLottie';
 
 const Riwayat = () => {
+    const uuid = localStorage.getItem('uuid');
+    const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('setor');
-    const [dataSetor, setDataSetor] = useState([]); // State untuk data setor
-    const [dataPenukaran, setDataPenukaran] = useState([]); // State untuk data penukaran
+    const token = localStorage.getItem('token'); // Pastikan token tersimpan di local storage
+
+    const { RiwayatData, isLoading, fetchRiwayatSetor, fetchRiwayatPenukaran } = useRiwayatStore();
 
     useEffect(() => {
         AOS.init({ duration: 1000 });
     }, []);
 
     useEffect(() => {
-        const token = localStorage.getItem('token'); // Pastikan token tersimpan di local storage
-        const nik = localStorage.getItem('nik'); // Pastikan NIK pengguna juga tersimpan
-
-        // Fungsi untuk mengambil data riwayat setor
-        const fetchRiwayatSetor = async () => {
-            try {
-                const response = await axios.get(`http://localhost:8000/api/oil-transactions-byNIK?nik=${nik}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-                // Mengubah data API sesuai kebutuhan
-                const formattedDataSetor = response.data.transactions.map((item) => ({
-                    id: item.id,
-                    volume: `${item.weight} Liter`,
-                    status: item.points_earned > 0 ? 'Sukses' : 'Proses',
-                    points: `${item.points_earned} Poin`,
-                    time: item.created_at
-                }));
-                setDataSetor(formattedDataSetor);
-            } catch (error) {
-                console.error("Error fetching transaction history:", error);
+        if (token) {
+            if (activeTab === 'setor' && RiwayatData.setor.length === 0) {
+                fetchRiwayatSetor(uuid, token);
+            } else if (activeTab === 'penukaran' && RiwayatData.penukaran.length === 0) {
+                const nik = localStorage.getItem('nik');
+                fetchRiwayatPenukaran(nik, token);
             }
-        };
-
-        // Fungsi untuk mengambil data riwayat penukaran
-        const fetchRiwayatPenukaran = async () => {
-            try {
-                const response = await axios.get(`http://localhost:8000/api/reward-redemptions/${nik}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-                // Mengubah data API sesuai kebutuhan
-                const formattedDataPenukaran = response.data.map((item) => ({
-                    id: item.id,
-                    name: item.nama_reward, // Pastikan ini sesuai dengan respons API
-                    status: item.points_ditukarkan < 0 ? 'Proses' : 'Sukses', // Atau logika sesuai status di API
-                    points: `${item.points_ditukarkan} Poin`,
-                    time: dayjs(item.waktu).locale('id').format('dddd, D MMMM YYYY HH:mm') // Format waktu
-                }));
-                setDataPenukaran(formattedDataPenukaran);
-            } catch (error) {
-                console.error("Error fetching redemption history:", error);
-            }
-        };
-
-        fetchRiwayatSetor();
-        if (activeTab === 'penukaran') {
-            fetchRiwayatPenukaran();
         }
-    }, [activeTab]); // Tambahkan activeTab sebagai dependensi
+    }, [activeTab, uuid, token, RiwayatData, fetchRiwayatSetor, fetchRiwayatPenukaran]);
 
-    // Fungsi untuk menentukan warna berdasarkan status
+
     const getStatusColor = (status) => {
         switch (status) {
             case 'Sukses':
-                return '#2D5D83'; // Warna sukses
+                return '#2D5D83';
             case 'Batal':
-                return '#E74C3C'; // Warna batal
+                return '#E74C3C';
             case 'Proses':
             default:
-                return '#FFB300'; // Warna proses (default)
+                return '#FFB300';
         }
     };
 
     return (
-        <div className='max-w-[550px] mx-auto bg-[#FFFFFF] shadow-xl h-[100vh] pb-[100px]'>
+        <div className='max-w-[550px] mx-auto bg-[#FFFFFF] shadow-xl min-h-[100vh] pb-[100px]'>
             <div>
                 <div className='text-center flex justify-between w-[60%] items-start mt-3'>
                     <img className=' w-[40px]  ml-5 h-[40px] bg-white rounded-lg p-1 shadow-sm border' src={img} alt="" />
@@ -110,53 +72,54 @@ const Riwayat = () => {
 
                 {/* Riwayat Setor */}
                 {activeTab === 'setor' && (
-                    <div data-aos="fade-up" className='card-riwayat setor-mijel mt-5 flex flex-col p-5'>
-                        {dataSetor.map((item) => (
-                            <div
-                                key={item.id}
-                                className='item-card-riwayat bg-white shadow-lg rounded-lg flex flex-col p-3 mt-2 hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105'
-                            >
-                                <div className='flex justify-between items-center'>
-                                    <p className='text-[15px] font-semibold'>{item.volume}</p>
-                                    <p
-                                        className={`w-[100px] text-center text-white px-5 rounded-lg font-semibold`}
-                                        style={{ backgroundColor: getStatusColor(item.status) }}
-                                    >
-                                        {item.status}
-                                    </p>
-                                </div>
-                                <div className='flex justify-between items-center'>
-                                    <p className='text-[12px] text-[#8696BB]'>{item.points}</p>
-                                    <p className='text-[14px] text-[#8696BB] m-2'>{item.time}</p>
-                                </div>
+                    <div data-aos="fade-up" className='card-riwayat setor-mijel mt-5 items-center justify-center flex flex-col p-5'>
+                        {isLoading ? (
+                            
+                            <div className='items-center  justify-center'>
+                            <LoadingLottie />
+
                             </div>
-                        ))}
+                        ) : (
+                            RiwayatData.setor.map((item) => (
+                                <div key={item.id} className='item-card-riwayat bg-white shadow-lg rounded-lg flex flex-col p-3 mt-2 hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105'>
+                                    <div className='flex justify-between items-center'>
+                                        <p className='text-[15px] font-semibold'>{item.volume}</p>
+                                        <p className='w-[100px] text-center text-white px-5 rounded-lg font-semibold' style={{ backgroundColor: getStatusColor(item.status) }}>
+                                            {item.status}
+                                        </p>
+                                    </div>
+                                    <div className='flex justify-between items-center'>
+                                        <p className='text-[12px] text-[#8696BB]'>{item.points}</p>
+                                        <p className='text-[14px] text-[#8696BB] m-2'>{dayjs(item.time).locale('id').format('dddd, D MMMM YYYY HH:mm')}</p>
+                                    </div>
+                                </div>
+                            ))
+                        )}
                     </div>
                 )}
 
                 {/* Riwayat Penukaran */}
                 {activeTab === 'penukaran' && (
                     <div data-aos="fade-up" className='card-riwayat penukaran-mijel mt-5 flex flex-col p-5'>
-                        {dataPenukaran.map((item) => (
-                            <div
-                                key={item.id}
-                                className='item-card-riwayat bg-white shadow-lg rounded-lg flex flex-col p-3 mt-2 hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105'
-                            >
-                                <div className='flex justify-between items-center'>
-                                    <p className='text-[15px] font-semibold'>{item.name}</p>
-                                    <p
-                                        className={`w-[100px] text-center text-white px-5 rounded-lg font-semibold`}
-                                        style={{ backgroundColor: getStatusColor(item.status) }}
-                                    >
-                                        {item.status}
-                                    </p>
+                        {isLoading ? (
+                            
+                            <LoadingLottie />
+                        ) : (
+                            RiwayatData.penukaran.map((item) => (
+                                <div key={item.id} className='item-card-riwayat bg-white shadow-lg rounded-lg flex flex-col p-3 mt-2 hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105'>
+                                    <div className='flex justify-between items-center'>
+                                        <p className='text-[15px] font-semibold'>{item.name}</p>
+                                        <p className='w-[100px] text-center text-white px-5 rounded-lg font-semibold' style={{ backgroundColor: getStatusColor(item.status) }}>
+                                            {item.status}
+                                        </p>
+                                    </div>
+                                    <div className='flex justify-between items-center'>
+                                        <p className='text-[12px] text-[#8696BB]'>{item.points}</p>
+                                        <p className='text-[14px] text-[#8696BB] m-2'>{dayjs(item.time).locale('id').format('dddd, D MMMM YYYY HH:mm')}</p>
+                                    </div>
                                 </div>
-                                <div className='flex justify-between items-center'>
-                                    <p className='text-[12px] text-[#8696BB]'>{item.points}</p>
-                                    <p className='text-[14px] text-[#8696BB] m-2'>{item.time}</p>
-                                </div>
-                            </div>
-                        ))}
+                            ))
+                        )}
                     </div>
                 )}
             </div>

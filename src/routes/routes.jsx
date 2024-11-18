@@ -44,6 +44,7 @@ import Register from "../pages/Web/Login/Register.jsx";
 import PrivateRoute from '../routes/PrivateRoute.jsx';
 import NewsEditor from "../pages/Admin/BeritaAdmin.jsx";
 import Ticketing from "../pages/Admin/ticketing.jsx";
+import LoadingLottie2 from "../components/loadingLottie.jsx";
 
 
 function RoutesIndex() {
@@ -75,7 +76,8 @@ function RoutesIndex() {
            
 
              
-         
+          {/* route "Riwayat" */}
+          <Route path="/lottie" element={<LoadingLottie2 />} />
          
            
 

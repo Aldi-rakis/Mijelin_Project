@@ -1,102 +1,66 @@
-import React, { useState,useRef, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import backarrow from '../../../assets/back_arrow.png';
+import useUserStore from '../../../components/store/useUserStore';
 
 const Datadiri = () => {
     const navigate = useNavigate();
     const { nik } = useParams(); // Get the nik from the URL params
     const inputref = useRef(null);
+
+    // Access Zustand store
+    const { userData, isLoading, fetchUserData, updateUserData } = useUserStore();
     const [image, setImage] = useState('');
 
-    // State untuk mengelola nilai input dan status loading
+    // Local state for form data
     const [formData, setFormData] = useState({
         name: '',
         no_hp: '',
         alamat: '',
-        image_profile: null, // State for the image file
+        image_profile: null,
     });
-    const [isLoading, setIsLoading] = useState(true);
 
-    const goBack = () => {
-        navigate(-1); // -1 berarti kembali ke halaman sebelumnya
-    };
+    const goBack = () => navigate(-1);
 
-    // Fungsi untuk menangani perubahan di setiap input
+    // Handle input change
     const handleChange = (e) => {
         const { id, value } = e.target;
-        setFormData((prevState) => ({
-            ...prevState,
-            [id]: value,
-        }));
+        setFormData((prevState) => ({ ...prevState, [id]: value }));
     };
 
-    // Fungsi untuk menangani perubahan pada input file
+    // Handle image file change
     const handleFileChange = (e) => {
         const file = e.target.files[0];
-        setFormData((prevState) => ({
-            ...prevState,
-            image_profile: file,
-        }));
-        setImage(e.target.files[0]); // Ambil file yang diupload
+        setFormData((prevState) => ({ ...prevState, image_profile: file }));
+        setImage(e.target.files[0]);
     };
-    const handleImageClick = () => {
-        inputref.current.click();
-    };
+    const handleImageClick = () => inputref.current.click();
 
-    // Fetching data alamat dari backend saat komponen pertama kali di-mount
+    // Only fetch data if userData is null or nik changes
     useEffect(() => {
-        const fetchAlamatData = async () => {
-            try {
-                const response = await fetch(`http://localhost:8000/api/user/${nik}`); // Endpoint to get user data
+        if (!userData || userData.nik !== nik) {
+            fetchUserData(nik);
+        } else {
+            setFormData({
+                name: userData.name,
+                no_hp: userData.no_hp,
+                alamat: userData.alamat,
+                image_profile: userData.image_profile,
+            });
+        }
+    }, [userData, nik, fetchUserData]);
 
-                if (response.ok) {
-                    const data = await response.json();
-                    // setImage(data.image_profile);
-                    setFormData({
-                        name: data.name,
-                        no_hp: data.no_hp,
-                        alamat: data.alamat,
-                        image_profile: data.image_profile, // Reset image_profile when fetching data
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Gagal Mengambil Data',
-                        text: 'Tidak dapat mengambil data alamat. Coba lagi nanti.',
-                    });
-                }
-            } catch (error) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Terjadi Kesalahan',
-                    text: 'Gagal mengambil data alamat. Periksa koneksi Anda.',
-                });
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        fetchAlamatData();
-    }, [nik]);
-
-    // Fungsi untuk menangani submit form
+    // Submit form data
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         const formDataToSend = new FormData();
         formDataToSend.append('name', formData.name);
         formDataToSend.append('no_hp', formData.no_hp);
-        formDataToSend.append('alamat', formData.alamat);
+        formDataToSend.append('alamat', formData.alamat);0
 
-        // Hanya tambahkan image_profile jika ada file yang dipilih
         if (formData.image_profile instanceof File) {
             formDataToSend.append('image_profile', formData.image_profile);
-        }
-
-        // Log the contents of formData to check the values being sent
-        for (let [key, value] of formDataToSend.entries()) {
-            console.log(`${key}:`, value);
         }
 
         try {
@@ -105,14 +69,18 @@ const Datadiri = () => {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`,
                 },
-                body: formDataToSend, // Kirim FormData
+                body: formDataToSend,
             });
 
             if (response.ok) {
-                const updatedData = await response.json();
-                console.log("User data updated successfully:", updatedData);
 
-                // Update localStorage with the new user data
+
+                const updatedData = await response.json();
+                if (updatedData.message === 'User updated successfully') {
+                    updateUserData(updatedData.data);
+                }
+                console.log(updatedData.data);
+
                 localStorage.setItem('user', JSON.stringify(updatedData.data));
                 Swal.fire({
                     icon: 'success',
@@ -120,12 +88,8 @@ const Datadiri = () => {
                     text: 'Alamat Anda telah berhasil diperbarui.',
                     timer: 2000,
                     showConfirmButton: false,
-                }).then(() => {
-                    // Arahkan ke halaman profil setelah SweetAlert ditutup
-                    navigate('/profile');
-                });
+                }).then(() => navigate('/profile'));
             } else {
-                console.error('Response error:', response.status, response.statusText);
                 Swal.fire({
                     icon: 'error',
                     title: 'Gagal Mengubah Data',
@@ -133,7 +97,6 @@ const Datadiri = () => {
                 });
             }
         } catch (error) {
-            console.error('Fetch error:', error);
             Swal.fire({
                 icon: 'error',
                 title: 'Terjadi Kesalahan',
@@ -141,7 +104,6 @@ const Datadiri = () => {
             });
         }
     };
-
 
     if (isLoading) {
         return <div className="text-center mt-10">Loading data...</div>;
@@ -161,18 +123,24 @@ const Datadiri = () => {
                     <h1 className='text-[25px] font-semibold text-[#000]'>
                         DataDiri
                     </h1>
-
                 </div>
 
                 <div onClick={handleImageClick} className='flex justify-center items-center mt-5'>
-                    { image ? <img className='w-[100px] h-[100px] rounded-full  ' src={URL.createObjectURL(image)} alt="" /> : image ? <img className='w-[100px] h-[100px] rounded-full  ' src={image} alt="" /> : <img className='w-[100px] h-[100px] rounded-full  ' src={formData.image_profile} alt="" />}
-                    {/* <img className='w-[100px] h-[100px] rounded-full  ' src={image} alt="" /> */}
-                    <input type="file"
-                                id="image"
-                                ref={inputref}
-                                accept="image/png, image/jpeg" onChange={handleFileChange} style={{ display: 'none' }}  />
-                        
+                    {image ? (
+                        <img className='w-[100px] h-[100px] rounded-full' src={URL.createObjectURL(image)} alt="" />
+                    ) : (
+                        <img className='w-[100px] h-[100px] rounded-full' src={formData.image_profile} alt="" />
+                    )}
+                    <input
+                        type="file"
+                        id="image"
+                        ref={inputref}
+                        accept="image/png, image/jpeg"
+                        onChange={handleFileChange}
+                        style={{ display: 'none' }}
+                    />
                 </div>
+
                 <div className='mt-[20px] px-5'>
                     <form onSubmit={handleSubmit} className="max-w-sm mx-auto">
                         {/* Nama Field */}
@@ -183,7 +151,7 @@ const Datadiri = () => {
                             <input
                                 type="text"
                                 id="name"
-                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                                 value={formData.name}
                                 onChange={handleChange}
                                 required
@@ -198,7 +166,7 @@ const Datadiri = () => {
                             <input
                                 type="tel"
                                 id="no_hp"
-                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                                 value={formData.no_hp}
                                 onChange={handleChange}
                                 placeholder="081234567890"
@@ -214,35 +182,18 @@ const Datadiri = () => {
                             <textarea
                                 id="alamat"
                                 rows="3"
-                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                                 value={formData.alamat}
                                 onChange={handleChange}
-                                placeholder="Jl. Komplek Permata Buah Batu No. B18, Lengkong, Kec. Bojongsoang, Kabupaten Bandung, Jawa Barat, 40287"
+                                placeholder="Alamat lengkap Anda"
                                 required
                             ></textarea>
                         </div>
 
-                        {/* Image Profile Field
-                        <div className="mb-5">
-                            <label htmlFor="image_profile" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                Upload Foto Profil
-                            </label>
-                            <input
-                                type="file"
-                                id="image_profile"
-                                accept="image/*" // Only accept image files
-                                onChange={handleFileChange}
-                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
-                            />
-                        </div> */}
-
-                       
-                            
-
                         {/* Submit Button */}
                         <button
                             type="submit"
-                            className="bottom-1 mt-5 text-white bg-[#2D5D83] hover:bg-[#254b6a] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                            className="bottom-1 mt-5 text-white bg-[#2D5D83] hover:bg-[#254b6a] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-5 text-center"
                         >
                             Ubah Data Diri
                         </button>
@@ -253,4 +204,4 @@ const Datadiri = () => {
     );
 };
 
-export default Datadiri;
+export default Datadiri

@@ -38,7 +38,7 @@ const Index = () => {
 
   
   return (
-    <div className='max-w-[550px] justify-center items-center mx-auto bg-[#FFFFFF]  shadow-xl h-[100%] pb-[100px]'>
+    <div className='max-w-[550px] justify-center min-h-[100vh] items-center mx-auto bg-[#FFFFFF]  shadow-xl h-[100%] pb-[100px]'>
 
       <div className='bg-yellow-200 h-[180px]  bg-[url("../../src/assets/bg-banner.png")] w-full bg-center bg-cover relative'>
         <div className='text-center flex justify-center items-start pt-3 h-6'>
