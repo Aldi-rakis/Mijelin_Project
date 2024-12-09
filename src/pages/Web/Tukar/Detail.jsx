@@ -1,34 +1,81 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import minyak from '../../../assets/minyak.png';
-import dayjs from 'dayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { useNavigate } from 'react-router-dom';
+import axios from 'axios';  // Import axios untuk melakukan panggilan API
+import { useNavigate, useParams } from 'react-router-dom';
 
 const Detailtukar = () => {
     const [selectedDate, setSelectedDate] = useState(null);
+    const [rewardDetail, setRewardDetail] = useState(null); // State untuk menyimpan detail reward
+    const [loading, setLoading] = useState(true); // State untuk loading indicator
+    const { id } = useParams(); // Mengambil parameter id dari URL
+    const navigate = useNavigate(); // Hook untuk navigasi
+    const nik = localStorage.getItem('nik');
 
-    const navigate = useNavigate();
+    // Panggilan API untuk mendapatkan detail reward
+    useEffect(() => {
+        const fetchRewardDetail = async () => {
+            try {
+                const response = await axios.get(`http://localhost:8000/api/rewards/${id}`);
+                setRewardDetail(response.data); // Menyimpan data reward ke state
+                setLoading(false); // Set loading false setelah data berhasil didapatkan
+            } catch (error) {
+                console.error('Error fetching reward detail:', error);
+                setLoading(false); // Set loading false jika ada error
+            }
+        };
 
-    const goBack = () => {
-        navigate(-1); // -1 berarti kembali ke halaman sebelumnya
-    };
+        fetchRewardDetail();
+    }, [id]);
 
-    const handleSubmit = () => {
-        if (selectedDate) {
-            const formattedDate = selectedDate.format('DD MMMM YYYY'); // Format tanggal
-            alert(`Tanggal pengiriman yang dipilih: ${formattedDate}`);
-            // Di sini Anda bisa menambahkan logika untuk mengirimkan tanggal ke server
-        } else {
-            alert('Silakan pilih tanggal!');
+    if (loading) {
+        return <div>Loading...</div>; // Tampilkan loading sementara data masih diambil
+    }
+
+    // Fungsi untuk menangani klik tombol "Tukar"
+    const handleTukar = async () => {
+        try {
+            // Panggil API untuk menukar reward dan menghasilkan voucher
+            const response = await axios.post('http://localhost:8000/api/reward-redemptions', {
+                reward_id: rewardDetail.id,
+                nik: nik,
+            });
+
+            // Cek response data
+            if (response.data.message === "Reward berhasil ditukarkan") {
+                console.log(response.data);
+                const qrCodeData = response.data.voucher.voucher_code;
+                const item_name = response.data.voucher.item_name;
+                // console.log(qrCodeData);
+              
+                // Ambil data QR code dari respons
+
+                // Navigasi ke halaman voucher dengan membawa data QR code
+                navigate(`/voucher`, { state: { qrCodeData, item_name} });
+            } else {
+                // Tangani kondisi jika poin tidak cukup
+                if (response.data.message === "Maaf Poin Anda tidak cukup") {
+                    alert("Poin Anda tidak cukup untuk menukar reward ini.");
+                } else {
+                    alert(response.data.message || 'Gagal menukar reward, coba lagi.');
+                }
+            }
+        } catch (error) {
+            console.error('Error exchanging reward:', error);
+
+            // Tampilkan pesan error dari server jika tersedia
+            if (error.response && error.response.data && error.response.data.message) {
+                alert(error.response.data.message);
+            } else {
+                alert('Terjadi kesalahan, coba lagi.');
+            }
         }
     };
+
 
     return (
         <div className='max-w-[550px] mx-auto bg-white shadow-xl h-[100vh] pb-[30px]'>
             <div className='text-center flex justify-start items-start pt-3 h-6'>
-                <img onClick={goBack}
+                <img onClick={() => navigate(-1)} // Menggunakan navigate untuk kembali
                     className='w-[40px] ml-5 h-[40px] bg-white rounded-lg p-1 shadow-sm border'
                     src='../src/assets/back_arrow.png'
                     alt="Back Arrow"
@@ -39,35 +86,19 @@ const Detailtukar = () => {
                 <img className='w-[200px]' src={minyak} alt="Minyak Goreng" />
             </div>
 
-            <div className='flex flex-col justify-start items-start pt-5 px-5 gap-y-3'>
-                <h3 className='text-[24px] font-semibold text-center'>Minyak Goreng 1 Liter</h3>
-                <p className='text-[#8696BB] text-[15px]'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo, ipsum?</p>
-                <p className='font-bold text-[25px] opacity-65'>20.000 Poin</p>
-            </div>
-
-            <div className='flex flex-col justify-start items-start pt-5 px-5'>
-                <p className='text-[16px] mb-2 font-semibold text-center'>Atur Waktu Pengiriman</p>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                        label="Pilih Tanggal"
-                        value={selectedDate}
-                        onChange={(newValue) => setSelectedDate(newValue)} // Mengatur nilai tanggal yang dipilih
-                        renderInput={(params) => (
-                            <div className='mt-4 w-full'>
-                                <input {...params} className='p-2 border bg-slate-900 border-gray-300 rounded-lg w-full' />
-                            </div>
-                        )}
-                    />
-                </LocalizationProvider>
+            <div className='flex flex-col justify-start items-start mt-20 px-5 gap-y-3'>
+                <h3 className='text-[24px] font-semibold text-center'>{rewardDetail?.name}</h3>
+                <p className='text-[#8696BB] text-[15px]'>{rewardDetail?.desc}</p>
+                <p className='font-bold text-[25px] opacity-65'>{rewardDetail?.point_cost} Poin</p>
             </div>
 
             <div className='flex flex-col w-full justify-center mt-12'>
-                <p className='text-[16px] mb-2 font-semibold text-start mx-4'> Poin : 36.000</p>
+                <p className='text-[16px] mb-4 font-semibold text-start mx-4'> Poin : {rewardDetail?.points}</p>
                 <button
-                    onClick={handleSubmit}
-                    className='w-[90%] mx-auto bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300'
+                    onClick={handleTukar}
+                    className='w-[90%] mx-auto bg-blue-500 text-xl text-white font-semibold py-4 px-4 rounded-lg hover:bg-blue-600 transition duration-300'
                 >
-                    Kirim
+                    Tukar
                 </button>
             </div>
         </div>

@@ -37,14 +37,18 @@ import Jemput from '../pages/Web/Jemput/Index.jsx';
 import Berita from '../pages/Web/Edukasi/Index.jsx'; 
 import Beritadetail from '../pages/Web/Edukasi/Detail.jsx'; 
 
-
 import Loginindex from '../pages/Web/Login/Index.jsx';
 import Login from '../pages/Web/Login/login.jsx';
 import Register from "../pages/Web/Login/Register.jsx";
 import PrivateRoute from '../routes/PrivateRoute.jsx';
-import NewsEditor from "../pages/Admin/BeritaAdmin.jsx";
+import BeritaIndex from "../pages/Admin/berita/index.jsx";
+import BeritaCreate from "../pages/Admin/berita/create.jsx";
+
+
 import Ticketing from "../pages/Admin/ticketing.jsx";
 import LoadingLottie2 from "../components/loadingLottie.jsx";
+import Voucher from "../pages/Web/Tukar/Voucher.jsx";
+import Dashboard from "../pages/Admin/Dashboard.jsx";
 
 
 function RoutesIndex() {
@@ -95,7 +99,10 @@ function RoutesIndex() {
             <Route path="/tukar" element={<Tukar />} />
 
                     {/* route "Tukar" */}
-                    <Route path="/tukar/detail" element={<Detailtukar />} />
+                    <Route path="/tukar/:id" element={<Detailtukar />} />
+
+                     {/* route "Tukar" */}
+                     <Route path="/voucher" element={<Voucher />} />
 
 
 
@@ -116,10 +123,18 @@ function RoutesIndex() {
             <Route path="/admin/login" element={<Alamat />} />
 
               {/* route "/admin/login" */}
-              <Route path="/admin/berita" element={<NewsEditor />} />
+              <Route path="/admin/beritacreate" element={<BeritaCreate />} />
+
+                {/* route "/admin/login" */}
+                <Route path="/admin/berita" element={<BeritaIndex />} />
 
                {/* route "/admin/login" */}
                <Route path="/admin/tiket" element={<Ticketing/>} />
+
+               
+               {/* route "/admin/login" */}
+               <Route path="/admin/dashboard" element={<Dashboard/>} />
+
 
               
 

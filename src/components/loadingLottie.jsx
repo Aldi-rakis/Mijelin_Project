@@ -1,6 +1,6 @@
 import React from 'react';
 import Lottie from 'react-lottie';
-import animationData from '../../public/lottie (1).json'; // Pindahkan file JSON ke src/assets
+import animationData from '../../src/assets/lottie (1).json'; // Pindahkan file JSON ke src/assets
 
 const LoadingLottie = () => {
   const defaultOptions = {

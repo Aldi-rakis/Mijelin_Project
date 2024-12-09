@@ -1,38 +1,38 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import minyak from '../../../assets/minyak.png'
 import voucer from '../../../assets/voucer.png'
 import Navigation from '../../../components/Navigation'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import useRewardStore from '../../..//components/store/useRewardStore';
+import useUserStore from '../../..//components/store/useUserStore';
+
 
 const Index = () => {
 
-  const [category, setCategory] = useState('Semua'); // State untuk melacak kategori yang dipilih
+  // const [category, setCategory] = useState('Semua'); // State untuk melacak kategori yang dipilih
 
   const navigate = useNavigate();
+  const { rewards, fetchRewards } = useRewardStore();
+  const { userData, fetchUserData } = useUserStore(); // Ambil data dan fungsi fetch dari store
+  const nik = localStorage.getItem('nik');
 
+ 
   const goBack = () => {
     navigate(-1);
-  }
+  };
+
+  useEffect(() => {
+    if (!userData || Object.keys(userData).length === 0) { // Fetch hanya jika data belum ada
+      fetchUserData(nik, navigate);
+    }
+    fetchRewards(); // Fetch data rewards saat komponen pertama kali dimuat
+  }, [userData, fetchUserData, fetchRewards, nik, navigate]);
 
   const handletodetail = () => {
     navigate('/Tukar/Detail');
   }
 
 
-    // Data hadiah
-    const items = [
-      { id: 1, name: 'Minyak Goreng', description: 'Lorem ipsum dolor sit psu psu psum dolor  psu psum dolor  psu psum dolor sit ametsit ame', points: '10.000 poin', image: minyak, category: 'Sembako' },
-      { id: 2, name: 'Voucher', description: 'Lorem ipsum dolor sit amet...', points: '10.000 poin', image: voucer, category: 'Voucher' },
-      { id: 3, name: 'Voucher', description: 'Lorem ipsum dolor sit amet...', points: '10.000 poin', image: voucer, category: 'Voucher' },
-      { id: 4, name: 'Minyak Goreng', description: 'Lorem ipsum dolor sit amet...', points: '10.000 poin', image: minyak, category: 'Sembako' }
-      // Tambahkan lebih banyak item jika diperlukan
-    ];
-
-    // Fungsi untuk menampilkan item berdasarkan kategori yang dipilih
-  const filteredItems = items.filter((item) => {
-    if (category === 'Semua') return true; // Tampilkan semua item jika kpsum dolor sitategori adalah 'Semua'
-    return item.category === category; // Filter berdasarkan kategori
-  });
 
  
 
@@ -55,7 +55,7 @@ const Index = () => {
             </div>
             <div className='mt-5'>
               <p className='text-[20px]'>Total Poin</p>
-              <p className='text-[30px] font-semibold'>6.000</p>
+              <p className='text-[30px] font-semibold'>{userData?.points}</p>
             </div>
           </div>
           <div className='w-full p-3 pl-5'>
@@ -68,31 +68,23 @@ const Index = () => {
       {/* card hadiah */}
 
       <div className='card-hadiah mt-[150px] flex flex-col items-center px-3'>
-      {/* Button untuk memilih kategori */}
-      <div className='card-item flex items-center justify-center mb-8'>
-        <button onClick={() => setCategory('Semua')} className={`w-[100px] h-[50px] mx-2 ${category === 'Semua' ? 'bg-[#2D5D83] text-white' : 'bg-[#ffffff] text-black'} rounded-2xl font-normal`}>Semua</button>
-        <button onClick={() => setCategory('Voucher')} className={`w-[100px] h-[50px] mx-2 ${category === 'Voucher' ? 'bg-[#2D5D83] text-white' : 'bg-[#ffffff] text-black'} rounded-2xl font-normal`}>Voucher</button>
-        <button onClick={() => setCategory('Sembako')} className={`w-[100px] h-[50px] mx-2 ${category === 'Sembako' ? 'bg-[#2D5D83] text-white' : 'bg-[#ffffff] text-black'} rounded-2xl font-normal`}>Sembako</button>
-      </div>  
+    
 
-      {/* Menampilkan item berdasarkan kategori yang dipilih */}
       <div className='overflow-y-auto hide-scrollbar max-h-[400px] w-full'>
-  {filteredItems.map((item) => (
-    <div
-    onClick={handletodetail}
-      key={item.id}
-      className='card-item flex items-center gap-1 justify-center mt-5 bg-white shadow-lg rounded-2xl max-w-max p-2 my-5 mx-auto hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105'
-    >
-      <div className='image w-[130px] h-[100px]'>
-        <img className='object-cover w-full h-full' src={item.image} alt={item.name} />
-      </div>
+  {rewards.map((reward) => (
+    <Link to={`/tukar/${reward.id}`} key={reward.id} className='w-full'>
+      <div className='card-item flex items-center gap-1 justify-center mt-5 bg-white shadow-md rounded-2xl max-w-max p-2 my-5 mx-auto hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105'>
+        <div className='image w-[130px] h-[100px]'>
+          <img className='object-cover w-full h-full' src={reward.image} alt={reward.name} />
+        </div>
 
-      <div className='desc w-[200px] ml-5'>
-        <p className='text-[16px] font-semibold'>{item.name}</p>
-        <p className='text-[14px]'>{item.description}</p>
-        <p className='text-[15px] font-semibold'>{item.points}</p>
+        <div className='desc w-[200px] ml-5'>
+          <p className='text-[16px] font-semibold'>{reward.name}</p>
+          <p className='text-[14px]'>{reward.desc}</p>
+          <p className='text-[15px] font-semibold'>{reward.point_cost} Poin</p>
+        </div>
       </div>
-    </div>
+    </Link>
   ))}
 </div>
 

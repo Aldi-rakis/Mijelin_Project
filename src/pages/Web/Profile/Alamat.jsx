@@ -125,7 +125,7 @@ const Alamat = () => {
                     <button onClick={goBack} aria-label="Go back" className='absolute left-0 ml-5'>
                         <img
                             className='w-[40px] h-[40px] bg-white rounded-lg p-1 shadow-sm border'
-                            src='../src/assets/back_arrow.png'
+                            src='/src/assets/back_arrow.png'
                             alt="Back arrow"
                         />
                     </button>
