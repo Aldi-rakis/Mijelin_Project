@@ -33,7 +33,7 @@ const Index = () => {
             } else {
                 // Jika data user tidak ada, lakukan fetch API
                 try {
-                    const response = await axios.get('https://backend-laravel.mijelin.my.id/api/user', {
+                    const response = await axios.get('http://localhost:8000/api/user', {
                         headers: {
                             Authorization: `Bearer ${token}`,
                         },
