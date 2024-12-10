@@ -37,7 +37,7 @@ const Create = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/news",
+        "http://backend-laravel.mijelin.my.id/api/news",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },

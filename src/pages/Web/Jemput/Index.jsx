@@ -20,7 +20,7 @@ const Index = () => {
     useEffect(() => {
         const fetchPickupSchedules = async () => {
             try {
-                const response = await fetch('http://localhost:8000/api/pickup-schedules');
+                const response = await fetch('http://backend-laravel.mijelin.my.id/api/pickup-schedules');
                 const result = await response.json();
                 if (result.data) {
                     const availableSchedules = result.data.filter(schedule => schedule.status === 'available');
@@ -50,7 +50,7 @@ const Index = () => {
         };
 
         try {
-            const response = await fetch('http://localhost:8000/api/user-pickups', {
+            const response = await fetch('http://backend-laravel.mijelin.my.id/api/user-pickups', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

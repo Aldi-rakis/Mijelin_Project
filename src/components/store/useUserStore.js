@@ -7,7 +7,7 @@ const useUserStore = create((set) => ({
     fetchUserData: async (nik) => {
         set({ isLoading: true });
         try {
-            const response = await fetch(`http://localhost:8000/api/user/${nik}`, {
+            const response = await fetch(`http://backend-laravel.mijelin.my.id/api/user/${nik}`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`,
                 },

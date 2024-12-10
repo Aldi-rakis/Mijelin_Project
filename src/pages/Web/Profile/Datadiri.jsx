@@ -64,7 +64,7 @@ const Datadiri = () => {
         }
 
         try {
-            const response = await fetch(`http://localhost:8000/api/user/${nik}`, {
+            const response = await fetch(`http://backend-laravel.mijelin.my.id/api/user/${nik}`, {
                 method: 'POST',
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`,
