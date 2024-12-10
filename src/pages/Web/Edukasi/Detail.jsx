@@ -15,7 +15,7 @@ const Detail = () => {
 
   useEffect(() => {
     // Mengambil data dari API berdasarkan id
-    axios.get(` http://backend-laravel.mijelin.my.id/api/news/${id}`)
+    axios.get(` https://backend-laravel.mijelin.my.id/api/news/${id}`)
       .then((response) => {
         setNewsData(response.data); // Menyimpan data dari respons API
       })

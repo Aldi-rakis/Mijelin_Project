@@ -15,7 +15,7 @@ const Detailtukar = () => {
     useEffect(() => {
         const fetchRewardDetail = async () => {
             try {
-                const response = await axios.get(`http://backend-laravel.mijelin.my.id/api/rewards/${id}`);
+                const response = await axios.get(`https://backend-laravel.mijelin.my.id/api/rewards/${id}`);
                 setRewardDetail(response.data); // Menyimpan data reward ke state
                 setLoading(false); // Set loading false setelah data berhasil didapatkan
             } catch (error) {
@@ -35,7 +35,7 @@ const Detailtukar = () => {
     const handleTukar = async () => {
         try {
             // Panggil API untuk menukar reward dan menghasilkan voucher
-            const response = await axios.post('http://backend-laravel.mijelin.my.id/api/reward-redemptions', {
+            const response = await axios.post('https://backend-laravel.mijelin.my.id/api/reward-redemptions', {
                 reward_id: rewardDetail.id,
                 nik: nik,
             });

@@ -6,7 +6,7 @@ const useUserStore = create((set) => ({
   userData: {}, // State untuk menyimpan data user
   fetchUserData: async (token, navigate) => {
     try {
-      const response = await axios.get('http://backend-laravel.mijelin.my.id/api/user', {
+      const response = await axios.get('https://backend-laravel.mijelin.my.id/api/user', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
