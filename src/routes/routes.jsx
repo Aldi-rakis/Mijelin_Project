@@ -41,8 +41,8 @@ import Loginindex from '../pages/Web/Login/Index.jsx';
 import Login from "../pages/Web/Login/Login.jsx"; // Verify this path
 import Register from "../pages/Web/Login/Register.jsx";
 import PrivateRoute from '../routes/PrivateRoute.jsx';
-import BeritaIndex from "../pages/Admin/berita/index.jsx";
-import BeritaCreate from "../pages/Admin/berita/create.jsx";
+import BeritaIndex from "../pages/Admin/berita/Index.jsx";
+import BeritaCreate from "../pages/Admin/berita/Create.jsx";
 
 
 import Ticketing from "../pages/Admin/ticketing.jsx";
