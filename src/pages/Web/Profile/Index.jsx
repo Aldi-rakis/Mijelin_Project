@@ -7,6 +7,9 @@ import Navigation from '../../../components/Navigation';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import bgImage from '../../../assets/bg-banner.png'; // Impor gambar
+import arrow from '../../../assets/back_arrow.png';
+
 
 const Index = () => {
     const [userData, setUserData] = useState({});
@@ -68,12 +71,13 @@ const Index = () => {
 
     return (
         <div className='max-w-[550px] justify-center items-center mx-auto bg-[#FFFFFF] shadow-xl h-[100%] pb-[150px]'>
-            <div className='bg-yellow-200 h-[180px] bg-[url("../../src/assets/bg-banner.png")] w-full bg-center bg-cover relative'>
+            <div className='bg-yellow-200 h-[180px]  w-full bg-center bg-cover relative'
+                style={{ backgroundImage: `url(${bgImage})` }}>
                 <div className='text-center flex justify-center items-start pt-3 h-6'>
                     <button onClick={goBack} aria-label="Go back" className='absolute left-0 ml-5'>
                         <img
                             className='w-[40px] h-[40px] bg-white rounded-lg p-1 shadow-sm border'
-                            src='../src/assets/back_arrow.png'
+                            src={arrow}
                             alt="Back arrow"
                         />
                     </button>

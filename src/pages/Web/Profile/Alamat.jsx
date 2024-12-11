@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import backarrow from '../../../assets/back_arrow.png';
 
 const Alamat = () => {
     const navigate = useNavigate();
@@ -125,7 +126,7 @@ const Alamat = () => {
                     <button onClick={goBack} aria-label="Go back" className='absolute left-0 ml-5'>
                         <img
                             className='w-[40px] h-[40px] bg-white rounded-lg p-1 shadow-sm border'
-                            src='/src/assets/back_arrow.png'
+                            src={backarrow}
                             alt="Back arrow"
                         />
                     </button>

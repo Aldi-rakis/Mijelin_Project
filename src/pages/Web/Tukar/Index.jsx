@@ -5,6 +5,7 @@ import Navigation from '../../../components/Navigation'
 import { Link, useNavigate } from 'react-router-dom'
 import useRewardStore from '../../..//components/store/useRewardStore';
 import useUserStore from '../../..//components/store/useUserStore';
+import bgImage from '../../../assets/bg-banner.png'; // Impor gambar
 
 
 const Index = () => {
@@ -40,7 +41,8 @@ const Index = () => {
   return (
     <div className='max-w-[550px] justify-center min-h-[100vh] items-center mx-auto bg-[#FFFFFF]  shadow-xl h-[100%] pb-[100px]'>
 
-      <div className='bg-yellow-200 h-[180px]  bg-[url("../../src/assets/bg-banner.png")] w-full bg-center bg-cover relative'>
+      <div className='bg-yellow-200 h-[180px]   w-full bg-center bg-cover relative'
+      style={{ backgroundImage: `url(${bgImage})` }}>
         <div className='text-center flex justify-center items-start pt-3 h-6'>
           <img onClick={goBack} className='w-[40px] left-0 absolute ml-5 h-[40px] bg-white rounded-lg p-1 shadow-sm border' src='../src/assets/back_arrow.png' alt="" />
           <h1 className='text-[25px] font-semibold text-[#fff]'>Tukar</h1>
