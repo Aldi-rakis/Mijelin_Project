@@ -5,6 +5,7 @@ import Userheader from "../../../components/Userheader";
 // import Routes from '../../routes/routes';
 import { Link } from 'react-router-dom'
 import Beritahome from "../../../components/Beritahome";
+import jemput from "../../../assets/icon jemput.png";
 
 function Home() {
   return (
@@ -26,7 +27,7 @@ function Home() {
           <div className="flex flex-col w-full p-5 mt-2 rounded-xl justify-center m-auto items-center h-[150px] text-center bg-[#FFFFFF] shadow-lg">
             <img
               className="w-[100px]"
-              src="../src/assets/icon jemput.png"
+              src={jemput}
               alt=""
             />
             <p className="text-[#8696BB]">Belum ada jadwal jemput</p>

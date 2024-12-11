@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import notifaction from '../assets/ph_bell (1).png';
 import { Link, useNavigate } from 'react-router-dom';
 import useUserStore from '../components/store/UseStore'; // Import store
-
+import icon from '../assets/icon (1).png';
 const Userheader = () => {
   const { userData, fetchUserData } = useUserStore(); // Ambil data dan fungsi fetch dari store
   const navigate = useNavigate();
@@ -51,7 +51,7 @@ const Userheader = () => {
             <div className="flex flex-col items-center">
               <img
                 className="w-[70px] max-sm:w-[50px]"
-                src="../src/assets/icon (1).png"
+                src={icon}
                 alt=""
               />
               <p className="text-center text-sm">Tukar poin</p>

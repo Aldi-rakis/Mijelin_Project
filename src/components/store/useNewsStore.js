@@ -7,7 +7,7 @@ const useBeritaStore = create((set) => ({
   fetchBerita: async () => {
     set({ isLoading: true });
     try {
-      const response = await fetch('https://backend-laravel.mijelin.my.id/api/news/'); // Ganti dengan URL API Anda
+      const response = await fetch('https://backend-laravel.mijelin.my.id/api/news'); // Ganti dengan URL API Anda
       const result = await response.json();
 
       // Jika data API dalam bentuk array di root
