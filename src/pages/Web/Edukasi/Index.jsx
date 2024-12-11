@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import Navigation from '../../../components/Navigation'
 import { useNavigate, Link } from 'react-router-dom'
+import '../Edukasi/detail.css';
 
 import useBeritaStore from '../../../components/store/useNewsStore'; // Import store Zustand
 
@@ -41,13 +42,15 @@ const Index = () => {
               <div className='w-3/4 mx-5 flex flex-col justify-between'> {/* Menggunakan flex-col untuk menyusun elemen secara vertikal */}
                 <div>
                   <p className="text-[15px] font-medium ">
-                    Bahaya Minyak Jelantah Bagi Lingkungan
+                   {item.title}
                   </p>
                   <hr className='border-2 border-black ' />
 
-                  <p className='description line-clamp-3  text-[12px] mt-1 font-normal text-justify'>
-                    descriptionbaaak Lorem, ipsum dolor Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat aliquam commodi, quod deserunt ut placeat dolorem esse ex incidunt excepturi.lorem 100 Lorem ipsum dolor sit amet consectetur adipisicing elit. In, maxime!
-                  </p>
+                  {/* <p className='description line-clamp-3  text-[12px] mt-1 font-normal text-justify'>
+                    {item.content}
+                  </p> */}
+                  <p id='content' className='content-preview  description line-clamp-4 text-[14px] mt-1 font-normal text-justify' dangerouslySetInnerHTML={{ __html: item.content }}></p>
+
                 </div>
 
                 <div className="mt-4"> {/* Memberikan margin atas pada div ini agar ada jarak yang jelas */}
