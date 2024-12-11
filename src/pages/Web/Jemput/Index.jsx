@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import useUserStore from '../../../components/store/useUserStore';
+import arrow from '../../../assets/back_arrow.png';
 
 const Index = () => {
     const [pickupSchedules, setPickupSchedules] = useState([]);
@@ -82,7 +83,7 @@ const Index = () => {
                     <button onClick={goBack} aria-label="Go back" className='absolute left-0 ml-5'>
                         <img
                             className='w-[40px] h-[40px] bg-white rounded-lg p-1 shadow-sm border'
-                            src='../src/assets/back_arrow.png'
+                            src={arrow}
                             alt="Back arrow"
                         />
                     </button>

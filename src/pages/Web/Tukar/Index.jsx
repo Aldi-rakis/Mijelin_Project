@@ -6,6 +6,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import useRewardStore from '../../..//components/store/useRewardStore';
 import useUserStore from '../../..//components/store/useUserStore';
 import bgImage from '../../../assets/bg-banner.png'; // Impor gambar
+import arrow from '../../../assets/back_arrow.png';
+import loyalty from '../../../assets/loyalty.png';
 
 
 const Index = () => {
@@ -44,7 +46,8 @@ const Index = () => {
       <div className='bg-yellow-200 h-[180px]   w-full bg-center bg-cover relative'
       style={{ backgroundImage: `url(${bgImage})` }}>
         <div className='text-center flex justify-center items-start pt-3 h-6'>
-          <img onClick={goBack} className='w-[40px] left-0 absolute ml-5 h-[40px] bg-white rounded-lg p-1 shadow-sm border' src='../src/assets/back_arrow.png' alt="" />
+          <img onClick={goBack} className='w-[40px] left-0 absolute ml-5 h-[40px] bg-white rounded-lg p-1 shadow-sm border'
+           src={arrow} alt="" />
           <h1 className='text-[25px] font-semibold text-[#fff]'>Tukar</h1>
         </div>
 
@@ -52,7 +55,7 @@ const Index = () => {
         <div className='card-Poin absolute w-[400px] max-sm:w-[300px] max-md:h-[200px] px-[20px] max-sm:top-[50%]  top-[60%] left-1/2 transform -translate-x-1/2 bg-[#ffffff] shadow-lg rounded-xl border-yellow-200 z-10'>
           <div className='flex items-start justify-start'>
             <div className='w-[70px] my-5 mx-3 '>
-            <img className='' src="../src/assets/loyalty.png" alt="" />
+            <img className='' src={loyalty} alt="" />
 
             </div>
             <div className='mt-5'>
