@@ -52,7 +52,7 @@ const Index = () => {
 
                 <div className="mt-4"> {/* Memberikan margin atas pada div ini agar ada jarak yang jelas */}
                   <p className="text-[12px] font-medium">
-                    Detik.com <span className="text-[#9397A0]">Sep 9, 2022</span>
+                    Detik.com <span className="text-[#9397A0]">{item.date}</span>
                   </p>
                 </div>
               </div>
