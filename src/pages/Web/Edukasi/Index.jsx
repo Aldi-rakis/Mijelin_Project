@@ -32,8 +32,8 @@ const Index = () => {
 
               <div className='w-2/4'>
                 <img
-                  className="rounded-lg bg-cover w-full h-full object-cover"
-                  src="../src/assets/img_edukasi.png"
+                  className="rounded-lg bg-cover w-full h-[200px] object-cover"
+                  src={item.image}
                   alt=""
                 />
 

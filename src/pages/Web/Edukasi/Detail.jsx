@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import minyak from '../../../assets/img_edukasi.png';
 import '../Edukasi/detail.css';
+import arrow from '../../../assets/back_arrow.png';
 
 const Detail = () => {
   const { id } = useParams(); // Mendapatkan id dari URL
@@ -35,10 +36,9 @@ const Detail = () => {
           <img
             onClick={goBack}
             className='w-[40px] left-0 absolute ml-5 h-[40px] bg-white rounded-lg p-1 shadow-sm border'
-            src='../src/assets/back_arrow.png'
+            src={arrow}
             alt="Back"
           />
-          <h1 className='text-[25px] font-semibold text-[#fff]'>Tukar</h1>
         </div>
 
         <div className='w-full h-[350px]'>
