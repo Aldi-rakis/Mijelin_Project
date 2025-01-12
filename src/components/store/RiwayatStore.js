@@ -34,7 +34,7 @@ const useRiwayatStore = create((set) => ({
         }
     },
     fetchRiwayatPenukaran: async (nik, token) => {
-        set({ isLoading: true });
+        set({ isLoading: false });
         try {
             const response = await fetch(`https://backend-laravel.mijelin.my.id/api/reward-redemptions/${nik}`, {
                 headers: { Authorization: `Bearer ${token}` }
@@ -53,8 +53,15 @@ const useRiwayatStore = create((set) => ({
             }));
         } catch (error) {
             console.error('Failed to fetch Penukaran data:', error);
+             set({ isLoading: false });
+
+        }
+        finally {
             set({ isLoading: false });
         }
+        
+        
+        
     },
     clearRiwayatData: () => set({ RiwayatData: { setor: [], penukaran: [] } })
 }));
