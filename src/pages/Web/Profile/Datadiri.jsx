@@ -127,7 +127,7 @@ const Datadiri = () => {
 
                 <div onClick={handleImageClick} className='flex justify-center items-center mt-5'>
                     {image ? (
-                        <img className='w-[100px] h-[100px] rounded-full' src={URL.createObjectURL(image)} alt="" />
+                        <img className='w-[100px] h-[100px] rounded-full object-cover' src={URL.createObjectURL(image)} alt="" />
                     ) : (
                         <img className='w-[100px] h-[100px] rounded-full' src={formData.image_profile} alt="" />
                     )}
