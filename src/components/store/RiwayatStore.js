@@ -10,7 +10,7 @@ const useRiwayatStore = create((set) => ({
     fetchRiwayatSetor: async (uuid, token) => {
         set({ isLoading: true });
         try {
-            const response = await fetch(`https://backend-laravel.mijelin.my.id/api/oil-transactions-byNIK?uuid=${uuid}`, {
+            const response = await fetch(`https://api-mijelin.rakis.my.id/api/oil-transactions-byNIK?uuid=${uuid}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             const data = await response.json();
@@ -36,7 +36,7 @@ const useRiwayatStore = create((set) => ({
     fetchRiwayatPenukaran: async (nik, token) => {
         set({ isLoading: false });
         try {
-            const response = await fetch(`https://backend-laravel.mijelin.my.id/api/reward-redemptions/${nik}`, {
+            const response = await fetch(`https://api-mijelin.rakis.my.id/api/reward-redemptions/${nik}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             const data = await response.json();

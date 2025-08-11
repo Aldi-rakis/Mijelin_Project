@@ -50,7 +50,7 @@ const Register = () => {
         }
 
         try {
-            const response = await fetch('https://backend-laravel.mijelin.my.id/api/register', {
+            const response = await fetch('https://api-mijelin.rakis.my.id/api/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

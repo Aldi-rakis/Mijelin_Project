@@ -5,7 +5,7 @@ const useRewardStore = create((set) => ({
   rewards: [], // State untuk menyimpan data rewards
   fetchRewards: async () => {
     try {
-      const response = await axios.get('https://backend-laravel.mijelin.my.id/api/rewards');
+      const response = await axios.get('https://api-mijelin.rakis.my.id/api/rewards');
       set({ rewards: response.data }); // Update state rewards dengan data dari API
       console.log(response.data);
     } catch (error) {

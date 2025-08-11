@@ -37,7 +37,7 @@ const Login = () => {
         e.preventDefault();
 
         try {
-            const response = await fetch('https://backend-laravel.mijelin.my.id/api/login', {
+            const response = await fetch('https://api-mijelin.rakis.my.id/api/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -47,6 +47,7 @@ const Login = () => {
                     password: formData.password,
                 }),
             });
+            console.log('Response:', response);
 
             if (response.ok) {
                 const data = await response.json();
@@ -78,6 +79,7 @@ const Login = () => {
                     position: "top- center",
                     icon: "failed",
                     title: "Login Gagal",
+                    text: errorData.message || 'Username atau password salah',
                     showConfirmButton: false,
                     timer: 1500
                   });

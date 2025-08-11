@@ -32,7 +32,7 @@ const Alamat = () => {
     useEffect(() => {
         const fetchAlamatData = async () => {
             try {
-                const response = await fetch(`https://backend-laravel.mijelin.my.id/api/user/${nik}`); // Endpoint to get user data
+                const response = await fetch(`https://api-mijelin.rakis.my.id/api/user/${nik}`); // Endpoint to get user data
 
                 if (response.ok) {
                     const data = await response.json();
@@ -67,7 +67,7 @@ const Alamat = () => {
         e.preventDefault();
 
         try {
-            const response = await fetch(`https://backend-laravel.mijelin.my.id/api/user/${nik}`, {
+            const response = await fetch(`https://api-mijelin.rakis.my.id/api/user/${nik}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
