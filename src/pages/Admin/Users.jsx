@@ -1,81 +1,104 @@
-import React, { useState } from 'react';
-import Layoutadmin from '../../layouts/Admin';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const Users = () => {
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
   const [sortBy, setSortBy] = useState('name');
   const [currentPage, setCurrentPage] = useState(1);
+  const [pagination, setPagination] = useState(null);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
-  // Mock data untuk users
-  const usersData = [
-    {
-      id: 1,
-      name: "Ahmad Rizki",
-      email: "ahmad.rizki@email.com",
-      phone: "+62 812-3456-7890",
-      avatar: "https://via.placeholder.com/40x40/4F46E5/FFFFFF?text=AR",
-      status: "active",
-      joinDate: "2024-01-15",
-      lastLogin: "2024-12-10 14:30",
-      totalPoints: 1250,
-      totalTransactions: 15,
-      role: "user"
+  // Fetch users dari API
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get(`https://api-mijelin.rakis.my.id/api/admin/users?page=${currentPage}`);
+        
+        if (response.data.success) {
+          setUsers(response.data.data.data);
+          setPagination({
+            current_page: response.data.data.current_page,
+            last_page: response.data.data.last_page,
+            total: response.data.data.total,
+            per_page: response.data.data.per_page,
+            from: response.data.data.from,
+            to: response.data.data.to
+          });
+        }
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchUsers();
+  }, [currentPage]);
+
+  // Filter dan search users
+  const filteredUsers = users.filter(user => {
+    const matchesSearch = user.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         user.nik?.includes(searchQuery) ||
+                         user.no_hp?.includes(searchQuery) ||
+                         user.email?.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    const matchesStatus = filterStatus === 'all' || 
+                         (filterStatus === 'active' && user.points > 0) ||
+                         (filterStatus === 'inactive' && user.points === 0);
+    
+    return matchesSearch && matchesStatus;
+  });
+
+  // Stats berdasarkan data real
+  const stats = [
+    { 
+      title: 'Total Users', 
+      value: pagination?.total || 0, 
+      color: 'bg-gradient-to-r from-blue-500 to-blue-600',
+      icon: (
+        <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+        </svg>
+      )
     },
-    {
-      id: 2,
-      name: "Siti Nurhaliza",
-      email: "siti.nurhaliza@email.com", 
-      phone: "+62 813-9876-5432",
-      avatar: "https://via.placeholder.com/40x40/059669/FFFFFF?text=SN",
-      status: "active",
-      joinDate: "2024-02-20",
-      lastLogin: "2024-12-09 09:15",
-      totalPoints: 890,
-      totalTransactions: 8,
-      role: "user"
+    { 
+      title: 'Users Aktif', 
+      value: users.filter(u => u.points > 0).length, 
+      color: 'bg-gradient-to-r from-green-500 to-green-600',
+      icon: (
+        <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      )
     },
-    {
-      id: 3,
-      name: "Budi Santoso",
-      email: "budi.santoso@email.com",
-      phone: "+62 814-5678-9012",
-      avatar: "https://via.placeholder.com/40x40/DC2626/FFFFFF?text=BS",
-      status: "inactive",
-      joinDate: "2024-03-10",
-      lastLogin: "2024-11-28 16:45",
-      totalPoints: 340,
-      totalTransactions: 3,
-      role: "user"
+    { 
+      title: 'Total Points', 
+      value: users.reduce((sum, u) => sum + (u.points || 0), 0), 
+      color: 'bg-gradient-to-r from-purple-500 to-purple-600',
+      icon: (
+        <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+        </svg>
+      )
     },
-    {
-      id: 4,
-      name: "Maya Sari",
-      email: "maya.sari@email.com",
-      phone: "+62 815-2468-1357",
-      avatar: "https://via.placeholder.com/40x40/7C3AED/FFFFFF?text=MS",
-      status: "active",
-      joinDate: "2024-04-05",
-      lastLogin: "2024-12-10 11:20",
-      totalPoints: 2150,
-      totalTransactions: 22,
-      role: "premium"
-    },
-    {
-      id: 5,
-      name: "Dedi Kurniawan",
-      email: "dedi.kurniawan@email.com",
-      phone: "+62 816-1357-2468",
-      avatar: "https://via.placeholder.com/40x40/EA580C/FFFFFF?text=DK",
-      status: "suspended",
-      joinDate: "2024-05-12",
-      lastLogin: "2024-12-01 08:30",
-      totalPoints: 120,
-      totalTransactions: 1,
-      role: "user"
+    { 
+      title: 'Total Transaksi', 
+      value: users.reduce((sum, u) => sum + (u.oil_transactions_count || 0), 0), 
+      color: 'bg-gradient-to-r from-orange-500 to-orange-600',
+      icon: (
+        <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+        </svg>
+      )
     }
   ];
 
+  // Helper functions
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
@@ -92,34 +115,56 @@ const Users = () => {
     }
   };
 
+  const handleViewDetails = (user) => {
+    setSelectedUser(user);
+    setShowModal(true);
+  };
+
   const getStatusColor = (status) => {
-    switch (status) {
-      case 'active':
-        return 'bg-green-100 text-green-800';
-      case 'inactive':
-        return 'bg-gray-100 text-gray-800';
-      case 'suspended':
-        return 'bg-red-100 text-red-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
+    if (status === 'active' || status > 0) {
+      return 'bg-green-100 text-green-800';
+    } else {
+      return 'bg-gray-100 text-gray-800';
     }
   };
 
-  const getRoleColor = (role) => {
-    switch (role) {
-      case 'premium':
-        return 'bg-purple-100 text-purple-800';
-      case 'admin':
-        return 'bg-blue-100 text-blue-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
+  const getUserStatus = (user) => {
+    if (user.points > 0) {
+      return 'Aktif';
+    } else {
+      return 'Tidak Aktif';
     }
   };
+
+  const formatDate = (dateString) => {
+    if (!dateString) return 'N/A';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('id-ID', { 
+      year: 'numeric', 
+      month: 'short', 
+      day: 'numeric' 
+    });
+  };
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  if (loading) {
+    return (
+      <div className="p-4 lg:p-6 min-h-screen bg-gray-50">
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+            <p className="text-gray-600 mt-4">Memuat data users...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <Layoutadmin>
-      <div className="flex flex-col w-full min-h-screen bg-gray-50">
-        {/* Header Section */}
+    <div className="p-4 lg:p-6 min-h-screen bg-gray-50">{/* Header Section */}
         <div className="bg-white shadow-sm border-b">
           <div className="p-6">
             <div className="flex items-center justify-between mb-6">
@@ -375,7 +420,8 @@ const Users = () => {
           </div>
         </div>
       </div>
-    </Layoutadmin>
+   
+    
   );
 };
 

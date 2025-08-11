@@ -49,7 +49,7 @@ const Layoutadmin = ({ children }) => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-100 relative">
+    <div className="flex min-h-screen md:h-screen bg-gray-100 relative">
       {/* Mobile Overlay */}
       {isMobile && mobileMenuOpen && (
         <div 
@@ -70,7 +70,7 @@ const Layoutadmin = ({ children }) => {
               : "w-20"
         } ${
           isMobile ? "fixed left-0 top-0 w-72 z-50" : "relative"
-        } bg-gradient-to-b from-[#1e293b] to-[#0f172a] h-screen p-5 pt-8 duration-300 shadow-2xl transition-all`}
+        } bg-gradient-to-b from-[#1e293b] to-[#0f172a] h-svh p-5 pt-8 duration-300 shadow-2xl transition-all`}
       >
         {/* Toggle Button */}
         {!isMobile && (

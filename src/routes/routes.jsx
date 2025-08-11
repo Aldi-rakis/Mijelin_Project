@@ -44,6 +44,7 @@ import PrivateRoute from '../routes/PrivateRoute.jsx';
 import BeritaIndex from "../pages/Admin/berita/Index.jsx";
 import BeritaCreate from "../pages/Admin/berita/Create.jsx";
 import Users from "../pages/Admin/Users.jsx";
+import Usernew from "../pages/Admin/UsersNew.jsx";
 
 
 import LoadingLottie2 from "../components/loadingLottie.jsx";
@@ -135,7 +136,7 @@ function RoutesIndex() {
                <Route path="/admin/dashboard" element={<Dashboard/>} />
 
                {/* route "/admin/users" */}
-               <Route path="/admin/users" element={<Users/>} />
+               <Route path="/admin/users" element={<Usernew />} />
 
 
               
