@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Layoutadmin from "../../layouts/Admin";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
@@ -159,7 +160,9 @@ const Users = () => {
   }
 
   return (
-    <div className="p-4 lg:p-6 min-h-screen bg-gray-50">
+    <>
+          <Layoutadmin>
+<div className="p-4 lg:p-6 min-h-screen bg-gray-50">
       {/* Header */}
       <div className="mb-6 lg:mb-8">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -501,6 +504,9 @@ const Users = () => {
         </div>
       )}
     </div>
+          </Layoutadmin>
+    </>
+    
   );
 };
 
