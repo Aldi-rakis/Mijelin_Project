@@ -52,7 +52,6 @@ const Create = () => {
   };
 
   return (
-    <Layoutadmin>
       <div className="flex md:flex-row flex-col w-full h-full overflow-hidden">
         {/* Editor Section */}
         <div className="w-full max-md:w-2/3 h-[550px] overflow-auto p-4 bg-gray-50">
@@ -147,7 +146,6 @@ const Create = () => {
 </div>
 
       </div>
-    </Layoutadmin>
   );
 };
 

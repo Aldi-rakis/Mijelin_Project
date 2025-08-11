@@ -161,7 +161,6 @@ const Users = () => {
 
   return (
     <>
-          <Layoutadmin>
 <div className="p-4 lg:p-6 min-h-screen bg-gray-50">
       {/* Header */}
       <div className="mb-6 lg:mb-8">
@@ -504,7 +503,6 @@ const Users = () => {
         </div>
       )}
     </div>
-          </Layoutadmin>
     </>
     
   );

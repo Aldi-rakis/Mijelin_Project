@@ -205,14 +205,12 @@ const DashboardOverview = () => {
 
   return (
     <>
-    <Layoutadmin>
  <div className="min-h-screen bg-gray-50 p-4 lg:p-6">
       {/* Header */}
       <div className="mb-8">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Dashboard Overview</h1>
-            <p className="text-gray-600 mt-1">Analisis komprehensif platform Mijelin</p>
+            <h1 className="text-2xl font-bold text-gray-900">Dashboard Overview</h1>
           </div>
           <div className="flex items-center space-x-3">
             <div className="text-sm text-gray-500">
@@ -231,33 +229,32 @@ const DashboardOverview = () => {
         </div>
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 mb-2">
         {statCards.map((stat, index) => (
-          <div key={index} className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
-            <div className="flex items-center justify-between mb-4">
-              <div className={`w-12 h-12 ${stat.bgColor} rounded-lg flex items-center justify-center text-2xl`}>
-                {stat.icon}
-              </div>
-              {stat.change !== undefined && (
-                <div className={`text-sm ${stat.change > 0 ? 'text-green-600' : 'text-gray-500'} flex items-center`}>
-                  {stat.change > 0 && '+'}
-                  {stat.change} {stat.changeLabel}
+            <div key={index} className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 hover:shadow-md transition-shadow">
+                <div className="flex items-center justify-between mb-2">
+                    <div className={`w-8 h-8 ${stat.bgColor} rounded-lg flex items-center justify-center text-lg`}>
+                        {stat.icon}
+                    </div>
+                    {stat.change !== undefined && (
+                        <div className={`text-xs ${stat.change > 0 ? 'text-green-600' : 'text-gray-500'} flex items-center`}>
+                            {stat.change > 0 && '+'}
+                            {stat.change} {stat.changeLabel}
+                        </div>
+                    )}
                 </div>
-              )}
+                <div>
+                    <h3 className="text-xs font-medium text-gray-600 mb-0.5">{stat.title}</h3>
+                    <p className={`text-lg font-bold ${stat.textColor}`}>{stat.value}</p>
+                    {stat.subtitle && (
+                        <p className="text-xs text-gray-500 mt-0.5">{stat.subtitle}</p>
+                    )}
+                </div>
             </div>
-            <div>
-              <h3 className="text-sm font-medium text-gray-600 mb-1">{stat.title}</h3>
-              <p className={`text-2xl font-bold ${stat.textColor}`}>{stat.value}</p>
-              {stat.subtitle && (
-                <p className="text-sm text-gray-500 mt-1">{stat.subtitle}</p>
-              )}
-            </div>
-          </div>
         ))}
-      </div>
+    </div>
 
-      {/* Charts Section */}
+    {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
         {/* Monthly Trends Line Chart */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
@@ -376,7 +373,6 @@ const DashboardOverview = () => {
         </div>
       </div>
     </div>
-    </Layoutadmin>
     </>
    
   );
