@@ -50,6 +50,7 @@ import Usernew from "../pages/Admin/UsersNew.jsx";
 import LoadingLottie2 from "../components/loadingLottie.jsx";
 import Voucher from "../pages/Web/Tukar/Voucher.jsx";
 import Dashboard from "../pages/Admin/Dashboard.jsx";
+import DashboardOverview from "../pages/Admin/DashboardOverview.jsx";
 
 
 function RoutesIndex() {
@@ -133,7 +134,7 @@ function RoutesIndex() {
 
                
                {/* route "/admin/dashboard" */}
-               <Route path="/admin/dashboard" element={<Dashboard/>} />
+               <Route path="/admin/dashboard" element={<DashboardOverview/>} />
 
                {/* route "/admin/users" */}
                <Route path="/admin/users" element={<Usernew />} />

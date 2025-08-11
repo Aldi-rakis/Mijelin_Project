@@ -86,7 +86,7 @@ const Layoutadmin = ({ children }) => {
         <div className="flex gap-x-4 gap-y-1 items-center">
           <div className="bg-gradient-to-r from-blue-500 to-indigo-600 p-2 rounded-xl">
             <img
-              src="../src/assets/admin/logo.png"
+              src="/admin/logo.png"
               className={`cursor-pointer duration-500 w-8 h-8 ${
                 (open || isMobile) && "rotate-[360deg]"
               }`}
@@ -118,7 +118,7 @@ const Layoutadmin = ({ children }) => {
                     ? "bg-white bg-opacity-20" 
                     : "bg-gray-600 bg-opacity-30 group-hover:bg-white group-hover:bg-opacity-20"
                 } transition-colors duration-200`}>
-                  <img src={`../src/assets/admin/${Menu.src}.png`} className="w-5 h-5" />
+                  <img src={`/admin/${Menu.src}.png`} className="w-5 h-5" />
                 </div>
                 <span
                   className={`${!open && !isMobile && "hidden"} origin-left duration-200 font-medium`}
@@ -139,7 +139,7 @@ const Layoutadmin = ({ children }) => {
             <div className="flex items-center gap-3">
               <img
                 className="w-10 h-10 rounded-full border-2 border-blue-400"
-                src="https://demo.tailladmin.com/src/images/user/user-01.png"
+                src="/admin/default.jpg"
                 alt="Admin"
               />
               <div className="flex-1">
