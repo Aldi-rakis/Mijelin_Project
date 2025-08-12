@@ -51,10 +51,13 @@ const Layoutadmin = ({ children }) => {
   };
 
   const handleLogout = () => {
-    // Clear auth data
-    localStorage.removeItem('admin_token');
-    localStorage.removeItem('admin_user');
-    // Redirect to login
+    // Clear admin auth data dari localStorage dan sessionStorage
+    localStorage.removeItem('adminToken');
+    localStorage.removeItem('adminUserData');
+    sessionStorage.removeItem('adminToken');
+    sessionStorage.removeItem('adminUserData');
+    
+    // Redirect to admin login
     navigate('/admin/login');
   };
 

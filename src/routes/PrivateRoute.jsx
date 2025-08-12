@@ -2,10 +2,16 @@ import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 
 const PrivateRoute = () => {
-  // Cek apakah token tersedia di localStorage sebagai tanda bahwa pengguna telah login
-  const auth = localStorage.getItem('token');
+  // Check if user is authenticated - menggunakan token user
+  const isUserAuthenticated = () => {
+    const userToken = localStorage.getItem('token') || sessionStorage.getItem('token');
+    return !!userToken;
+  };
+
+  console.log("PrivateRoute: isUserAuthenticated =", isUserAuthenticated());
   
-  return auth ? <Outlet /> : <Navigate to="/loginindex" />;
+  // If not authenticated as user, redirect to user login
+  return isUserAuthenticated() ? <Outlet /> : <Navigate to="/loginindex" replace />;
 };
 
 export default PrivateRoute;
