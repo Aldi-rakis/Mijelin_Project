@@ -1,46 +1,96 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layoutadmin from '../../../layouts/Admin';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [sortBy, setSortBy] = useState('date');
   const [filterStatus, setFilterStatus] = useState('all');
+  const [newsData, setNewsData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [totalNews, setTotalNews] = useState(0);
+  const [stats, setStats] = useState({
+    total: 0,
+    published: 0,
+    draft: 0,
+    totalViews: 0
+  });
 
-  // Mock data untuk demonstrasi
-  const newsData = [
-    {
-      id: 1,
-      title: "Tips Menghemat BBM untuk Pengendara Motor",
-      image: "https://via.placeholder.com/80x60/4F46E5/FFFFFF?text=News",
-      author: "Admin",
-      date: "2024-12-10",
-      status: "published",
-      views: 1250,
-      category: "Tips"
-    },
-    {
-      id: 2,
-      title: "Manfaat Daur Ulang Minyak Jelantah untuk Lingkungan",
-      image: "https://via.placeholder.com/80x60/059669/FFFFFF?text=Green",
-      author: "Editor",
-      date: "2024-12-08",
-      status: "draft",
-      views: 890,
-      category: "Lingkungan"
-    },
-    {
-      id: 3,
-      title: "Program Reward Mijelin: Tukar Poin dengan Voucher Menarik",
-      image: "https://via.placeholder.com/80x60/DC2626/FFFFFF?text=Reward",
-      author: "Admin",
-      date: "2024-12-05",
-      status: "published",
-      views: 2100,
-      category: "Promo"
+  // Fetch news data from API
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get('https://api-mijelin.rakis.my.id/api/news');
+        
+        if (response.data.status === 200 && response.data.data) {
+          const newsArray = response.data.data;
+          setNewsData(newsArray);
+          setTotalNews(newsArray.length);
+          
+          // Calculate stats
+          const published = newsArray.filter(news => news.status === 'published').length;
+          const draft = newsArray.filter(news => news.status === 'draft').length;
+          
+          setStats({
+            total: newsArray.length,
+            published: published,
+            draft: draft,
+            totalViews: newsArray.reduce((sum, news) => sum + (news.views || 0), 0)
+          });
+        }
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching news:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchNews();
+  }, []);
+
+  // Filter and search news
+  const filteredNews = newsData.filter(news => {
+    const matchesSearch = news.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         news.content?.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    const matchesStatus = filterStatus === 'all' || 
+                         (filterStatus === 'published' && news.status === 'published') ||
+                         (filterStatus === 'draft' && news.status === 'draft');
+    
+    return matchesSearch && matchesStatus;
+  });
+
+  // Sort news
+  const sortedNews = [...filteredNews].sort((a, b) => {
+    switch (sortBy) {
+      case 'title':
+        return a.title.localeCompare(b.title);
+      case 'views':
+        return (b.views || 0) - (a.views || 0);
+      case 'date':
+      default:
+        return new Date(b.created_at || b.date) - new Date(a.created_at || a.date);
     }
-  ];
+  });
+
+  // Pagination
+  const itemsPerPage = 10;
+  const totalPages = Math.ceil(sortedNews.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedNews = sortedNews.slice(startIndex, startIndex + itemsPerPage);
+
+  // Utility function to format date
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('id-ID', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
@@ -53,8 +103,26 @@ const Index = () => {
     }
   };
 
+  // Loading component
+  if (loading) {
+    return (
+      <Layoutadmin>
+        <div className="p-6">
+          <div className="flex items-center justify-center min-h-[400px]">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-indigo-600 mx-auto mb-4"></div>
+              <p className="text-gray-600">Memuat data berita...</p>
+            </div>
+          </div>
+        </div>
+      </Layoutadmin>
+    );
+  }
+
   return (
-      <div className="flex flex-col w-full min-h-screen bg-gray-50">
+
+    <>  <Layoutadmin>
+       <div className="flex flex-col w-full min-h-screen bg-gray-50">
         {/* Header Section */}
         <div className="bg-white shadow-sm border-b">
           <div className="p-4 lg:p-6">
@@ -79,7 +147,7 @@ const Index = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-blue-100 text-xs lg:text-sm">Total Berita</p>
-                    <p className="text-xl lg:text-2xl font-bold">24</p>
+                    <p className="text-xl lg:text-2xl font-bold">{stats.total}</p>
                   </div>
                   <div className="bg-blue-400 bg-opacity-30 p-2 lg:p-3 rounded-lg">
                     <svg className="w-4 h-4 lg:w-6 lg:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -93,7 +161,7 @@ const Index = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-green-100 text-xs lg:text-sm">Published</p>
-                    <p className="text-xl lg:text-2xl font-bold">18</p>
+                    <p className="text-xl lg:text-2xl font-bold">{stats.published}</p>
                   </div>
                   <div className="bg-green-400 bg-opacity-30 p-2 lg:p-3 rounded-lg">
                     <svg className="w-4 h-4 lg:w-6 lg:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -107,7 +175,7 @@ const Index = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-yellow-100 text-xs lg:text-sm">Draft</p>
-                    <p className="text-xl lg:text-2xl font-bold">6</p>
+                    <p className="text-xl lg:text-2xl font-bold">{stats.draft}</p>
                   </div>
                   <div className="bg-yellow-400 bg-opacity-30 p-2 lg:p-3 rounded-lg">
                     <svg className="w-4 h-4 lg:w-6 lg:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -121,7 +189,7 @@ const Index = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-purple-100 text-xs lg:text-sm">Total Views</p>
-                    <p className="text-xl lg:text-2xl font-bold">12.5K</p>
+                    <p className="text-xl lg:text-2xl font-bold">{stats.totalViews.toLocaleString()}</p>
                   </div>
                   <div className="bg-purple-400 bg-opacity-30 p-2 lg:p-3 rounded-lg">
                     <svg className="w-4 h-4 lg:w-6 lg:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -204,7 +272,7 @@ const Index = () => {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {newsData.map((news) => (
+                  {paginatedNews.map((news) => (
                     <tr key={news.id} className="hover:bg-gray-50 transition-colors duration-150">
                       <td className="px-6 py-4 whitespace-nowrap">
                         <input type="checkbox" className="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
@@ -212,22 +280,17 @@ const Index = () => {
                       <td className="px-6 py-4">
                         <div className="flex items-center">
                           <img
-                            src={news.image}
+                            src={news.image || "https://via.placeholder.com/80x60/4F46E5/FFFFFF?text=News"}
                             alt={news.title}
                             className="h-16 w-20 object-cover rounded-lg mr-4 shadow-sm"
                           />
                           <div className="flex-1">
                             <div className="text-sm font-medium text-gray-900 line-clamp-2">{news.title}</div>
-                            <div className="text-sm text-gray-500 mt-1">
-                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                {news.category}
-                              </span>
-                            </div>
                           </div>
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-900">{news.author}</div>
+                        <div className="text-sm text-gray-900">{news.author || 'Admin'}</div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
@@ -239,10 +302,10 @@ const Index = () => {
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {news.views.toLocaleString()}
+                        {(news.views || 0).toLocaleString()}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {new Date(news.date).toLocaleDateString('id-ID')}
+                        {formatDate(news.created_at || news.date)}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <div className="flex items-center space-x-2">
@@ -275,12 +338,12 @@ const Index = () => {
 
             {/* Mobile Card View */}
             <div className="lg:hidden">
-              {newsData.map((news) => (
+              {paginatedNews.map((news) => (
                 <div key={news.id} className="p-4 border-b border-gray-200 last:border-b-0">
                   <div className="flex items-start space-x-3">
                     <input type="checkbox" className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 mt-1 flex-shrink-0" />
                     <img
-                      src={news.image}
+                      src={news.image || "https://via.placeholder.com/80x60/4F46E5/FFFFFF?text=News"}
                       alt={news.title}
                       className="h-12 w-16 object-cover rounded-lg flex-shrink-0"
                     />
@@ -311,9 +374,6 @@ const Index = () => {
                       </div>
                       
                       <div className="flex flex-wrap items-center gap-2 text-xs text-gray-500 mb-2">
-                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                          {news.category}
-                        </span>
                         <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
                           news.status === 'published' 
                             ? 'bg-green-100 text-green-800' 
@@ -323,24 +383,16 @@ const Index = () => {
                         </span>
                       </div>
                       
-                      <div className="grid grid-cols-3 gap-2 text-xs text-gray-500">
-                        <div>
-                          <span className="font-medium">Author:</span>
-                          <br />
-                          {news.author}
-                        </div>
+                      <div className="grid grid-cols-2 gap-2 text-xs text-gray-500">
                         <div>
                           <span className="font-medium">Views:</span>
                           <br />
-                          {news.views.toLocaleString()}
+                          {(news.views || 0).toLocaleString()}
                         </div>
                         <div>
                           <span className="font-medium">Tanggal:</span>
                           <br />
-                          {new Date(news.date).toLocaleDateString('id-ID', { 
-                            day: 'numeric', 
-                            month: 'short' 
-                          })}
+                          {formatDate(news.created_at || news.date)}
                         </div>
                       </div>
                     </div>
@@ -375,6 +427,8 @@ const Index = () => {
           </div>
         </div>
       </div>
+      </Layoutadmin></>
+     
   );
 };
 

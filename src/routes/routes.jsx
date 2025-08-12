@@ -49,7 +49,8 @@ import Usernew from "../pages/Admin/UsersNew.jsx";
 
 import LoadingLottie2 from "../components/loadingLottie.jsx";
 import Voucher from "../pages/Web/Tukar/Voucher.jsx";
-import Dashboard from "../pages/Admin/Dashboard.jsx";
+import Dashboard from "../pages/Admin/DashboardOverview.jsx";
+import PickupIndex from "../pages/Admin/Pickup/Index.jsx";
 
 
 function RoutesIndex() {
@@ -137,6 +138,9 @@ function RoutesIndex() {
 
                {/* route "/admin/users" */}
                <Route path="/admin/users" element={<Usernew />} />
+
+               {/* route "/admin/pickup" */}
+               <Route path="/admin/pickup" element={<PickupIndex />} />
 
 
               

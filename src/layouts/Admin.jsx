@@ -1,17 +1,20 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom"; 
-import { Link } from "react-router-dom"; // Import useLocation
+import { useLocation, useNavigate } from "react-router-dom"; 
+import { Link } from "react-router-dom";
 
 const Layoutadmin = ({ children }) => {
   const [open, setOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const location = useLocation(); // Ambil lokasi URL
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
   
   const Menus = [
     { title: "Dashboard", src: "Chart_fill", link: "/admin/dashboard" },
     { title: "Berita", src: "Chat", link: "/admin/berita" },
     { title: "Users", src: "User", link: "/admin/users" },
+    { title: "Pickup", src: "Folder", link: "/admin/pickup" },
     { title: "Ticketing", src: "Setting", link: "/admin/tiket" },
   ];
 
@@ -46,6 +49,14 @@ const Layoutadmin = ({ children }) => {
     } else {
       setOpen(!open);
     }
+  };
+
+  const handleLogout = () => {
+    // Clear auth data
+    localStorage.removeItem('admin_token');
+    localStorage.removeItem('admin_user');
+    // Redirect to login
+    navigate('/admin/login');
   };
 
   return (
@@ -146,7 +157,10 @@ const Layoutadmin = ({ children }) => {
                 <p className="text-white font-medium text-sm">Admin User</p>
                 <p className="text-blue-200 text-xs">Super Admin</p>
               </div>
-              <button className="text-gray-400 hover:text-white transition-colors">
+              <button 
+                onClick={() => setShowLogoutModal(true)}
+                className="text-gray-400 hover:text-white transition-colors"
+              >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                 </svg>
@@ -231,6 +245,41 @@ const Layoutadmin = ({ children }) => {
           {children}
         </div>
       </div>
+
+      {/* Logout Modal */}
+      {showLogoutModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-96 mx-4">
+            <div className="flex items-center mb-4">
+              <div className="bg-red-100 p-2 rounded-full mr-3">
+                <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900">Konfirmasi Logout</h3>
+            </div>
+            
+            <p className="text-gray-600 mb-6">
+              Apakah Anda yakin ingin keluar dari sistem admin?
+            </p>
+            
+            <div className="flex justify-end space-x-3">
+              <button
+                onClick={() => setShowLogoutModal(false)}
+                className="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                Batal
+              </button>
+              <button
+                onClick={handleLogout}
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+              >
+                Ya, Logout
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
