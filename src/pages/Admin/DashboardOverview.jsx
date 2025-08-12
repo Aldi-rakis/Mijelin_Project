@@ -59,12 +59,16 @@ const DashboardOverview = () => {
       ...prevData,
       overview: {
         ...prevData.overview,
-        total_oil_transactions: prevData.overview.total_oil_transactions + 1
+        total_oil_transactions: prevData.overview.total_oil_transactions + 1,
+        total_oil_weight: prevData.overview.total_oil_weight + data.weight,
+        total_points_earned: prevData.overview.total_points_earned + data.points_earned
       },
-    //   recent_activity: {
-    //     ...prevData.recent_activity,
-    //     total_oil_transactions_this_week: prevData.recent_activity.total_oil_transactions_this_week + 1
-    //   }
+      recent_activity: {
+        ...prevData.recent_activity,
+        oil_transactions_this_week: prevData.recent_activity.oil_transactions_this_week + 1,
+        weight_this_week: prevData.recent_activity.oil_weight_this_week + data.weight,
+        earned_this_week: prevData.recent_activity.earned_this_week + data.points_earned
+      }
     }));
   });
 
