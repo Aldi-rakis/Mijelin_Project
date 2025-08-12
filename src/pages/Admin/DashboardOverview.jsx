@@ -18,7 +18,8 @@ import {
 } from 'recharts';
 import io from 'socket.io-client';
 
-const socket = io('http://localhost:3000');
+const SOCKET_URL = import.meta.env.VITE_APP_SOCKET_URL || 'http://localhost:3000';
+const socket = io(SOCKET_URL);
 const DashboardOverview = () => {
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(true);
