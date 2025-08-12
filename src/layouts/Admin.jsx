@@ -15,7 +15,6 @@ const Layoutadmin = ({ children }) => {
     { title: "Berita", src: "Chat", link: "/admin/berita" },
     { title: "Users", src: "User", link: "/admin/users" },
     { title: "Pickup", src: "Folder", link: "/admin/pickup" },
-    { title: "Ticketing", src: "Setting", link: "/admin/tiket" },
   ];
 
   // Check if mobile on mount and window resize
@@ -86,7 +85,7 @@ const Layoutadmin = ({ children }) => {
         {/* Toggle Button */}
         {!isMobile && (
           <img
-            src="../src/assets/admin/control.png"
+            src="/admin/control.png"
             className={`absolute cursor-pointer -right-3 top-5 w-7 border-2 border-blue-500 bg-white
              rounded-full ${!open && "rotate-180"} transition-transform duration-300 hover:scale-110`}
             onClick={toggleSidebar}
@@ -224,7 +223,7 @@ const Layoutadmin = ({ children }) => {
                 <button className="flex items-center space-x-2 sm:space-x-3 p-1 sm:p-2 rounded-lg hover:bg-gray-100 transition-colors">
                   <img
                     className="w-6 h-6 sm:w-8 sm:h-8 rounded-full border-2 border-gray-200"
-                    src="https://demo.tailladmin.com/src/images/user/user-01.png"
+                    src="/admin/default.jpg"
                     alt="Profile"
                   />
                   <div className="hidden md:block text-left">
