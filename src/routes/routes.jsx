@@ -55,8 +55,9 @@ import Adminlogin from "../pages/Admin/Login.jsx";
 import Dashboard from "../pages/Admin/DashboardOverview.jsx";
 
 //import Admin Berita
-import BeritaIndex from "../pages/Admin/berita/index.jsx";
 import BeritaCreate from "../pages/Admin/berita/Create.jsx";
+import BeritaIndex from "../pages/Admin/berita/Berita.jsx";
+
 
 //import Admin Users
 import Usernew from "../pages/Admin/UsersNew.jsx";
