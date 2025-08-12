@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
+import Swal from 'sweetalert2';
 function Login() {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
@@ -51,9 +51,13 @@ function Login() {
                 email: formData.email,
                 password: formData.password
             });
+            console.log("Login response:", response);
+
+
 
             if (response.data.success) {
                 // Store admin token and user data with admin prefix
+
                 const { token, user } = response.data.data;
                 
                 if (rememberMe) {
@@ -66,10 +70,15 @@ function Login() {
 
                 // Redirect to admin dashboard
                 navigate('/admin/dashboard');
-            } else {
-                setError(response.data.message || 'Login gagal');
+            } else if (response.status === 401) {
+                setError('Login gagal');
             }
         } catch (err) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Login Gagal',
+                text: 'Email atau password salah',
+            });
             console.error('Login error:', err);
             if (err.response?.data?.message) {
                 setError(err.response.data.message);
@@ -114,7 +123,7 @@ function Login() {
 
                             {/* Email Input */}
                             <div>
-                                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                                <label typeof="email" className="block text-sm font-medium text-gray-700 mb-2">
                                     Email Address
                                 </label>
                                 <div className="relative">
