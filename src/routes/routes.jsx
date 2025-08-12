@@ -6,7 +6,6 @@ import { Routes, Route } from "react-router-dom";
 //=======================================================================
 
 //import view Login
-import AdminLogin from '../pages/Admin/Login.jsx';
 
 
 //import view Home
@@ -42,7 +41,6 @@ import Loginindex from '../pages/Web/Login/Index.jsx';
 import Login from "../pages/Web/Login/Login.jsx"; // Verify this path
 import Register from "../pages/Web/Login/Register.jsx";
 import PrivateRoute from '../routes/PrivateRoute.jsx';
-import AdminProtectedRoute from '../routes/AdminProtectedRoute.jsx';
 import BeritaIndex from "../pages/Admin/berita/Index.jsx";
 import BeritaCreate from "../pages/Admin/berita/Create.jsx";
 import Users from "../pages/Admin/Users.jsx";
@@ -52,7 +50,6 @@ import Usernew from "../pages/Admin/UsersNew.jsx";
 import LoadingLottie2 from "../components/loadingLottie.jsx";
 import Voucher from "../pages/Web/Tukar/Voucher.jsx";
 import Dashboard from "../pages/Admin/Dashboard.jsx";
-import DashboardOverview from "../pages/Admin/DashboardOverview.jsx";
 
 
 function RoutesIndex() {
@@ -124,15 +121,22 @@ function RoutesIndex() {
 
 
             {/* route "/admin/login" */}
-            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin/login" element={<Alamat />} />
 
-            {/* Protected Admin Routes */}
-            <Route path="/admin" element={<AdminProtectedRoute />}>
-              <Route path="dashboard" element={<DashboardOverview/>} />
-              <Route path="berita" element={<BeritaIndex />} />
-              <Route path="beritacreate" element={<BeritaCreate />} />
-              <Route path="users" element={<Usernew />} />
-            </Route>
+              {/* route "/admin/login" */}
+              <Route path="/admin/beritacreate" element={<BeritaCreate />} />
+
+                {/* route "/admin/login" */}
+                <Route path="/admin/berita" element={<BeritaIndex />} />
+
+               {/* route "/admin/login" */}
+
+               
+               {/* route "/admin/dashboard" */}
+               <Route path="/admin/dashboard" element={<Dashboard/>} />
+
+               {/* route "/admin/users" */}
+               <Route path="/admin/users" element={<Usernew />} />
 
 
               

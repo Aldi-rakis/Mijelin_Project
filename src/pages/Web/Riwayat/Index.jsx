@@ -52,6 +52,7 @@ const Riwayat = () => {
     //   return <LoadingLottie />;
     // }
 
+
     if (data.length === 0) {
       return (
         <div className="text-center text-[#8696BB] mt-5">
@@ -77,7 +78,7 @@ const Riwayat = () => {
         <div className="flex justify-between items-center">
           <p className="text-[12px] text-[#8696BB]">{item.points}</p>
           <p className="text-[14px] text-[#8696BB] m-2">
-            {dayjs(item.time).locale("id").format("dddd, D MMMM YYYY HH:mm")}
+            {item.time}
           </p>
         </div>
       </div>

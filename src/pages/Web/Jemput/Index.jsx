@@ -99,7 +99,7 @@ const Index = () => {
                                 <div className='flex gap-3'>
                                     <p className='text-[20px] max-md:text-[15px] font-semibold'>{userData.name}</p>
                                     <span className='text-[20px] max-md:text-[15px]'>|</span>
-                                    <p className='text-[20px] max-md:text-[15px] text-[#000000]'>{userData.phone}</p>
+                                    <p className='text-[20px] max-md:text-[15px] text-[#000000]'>{userData.no_hp}</p>
                                 </div>
                                 <p className='text-[15px] mt-3'>{userData.alamat}</p>
                             </>

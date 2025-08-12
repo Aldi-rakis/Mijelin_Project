@@ -40,7 +40,8 @@ const useRiwayatStore = create((set) => ({
                 headers: { Authorization: `Bearer ${token}` }
             });
             const data = await response.json();
-            const formattedPenukaranData = data.map((item) => ({
+
+            const formattedPenukaranData = data.data.map((item) => ({
                 id: item.id,
                 name: item.nama_reward,
                 status: item.points_ditukarkan < 0 ? 'Proses' : 'Sukses',

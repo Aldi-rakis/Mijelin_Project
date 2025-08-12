@@ -1,14 +1,12 @@
 import { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom"; 
+import { useLocation } from "react-router-dom"; 
 import { Link } from "react-router-dom"; // Import useLocation
 
 const Layoutadmin = ({ children }) => {
   const [open, setOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [showLogoutModal, setShowLogoutModal] = useState(false);
   const location = useLocation(); // Ambil lokasi URL
-  const navigate = useNavigate();
   
   const Menus = [
     { title: "Dashboard", src: "Chart_fill", link: "/admin/dashboard" },
@@ -42,47 +40,12 @@ const Layoutadmin = ({ children }) => {
     }
   }, [location.pathname, isMobile]);
 
-  // Handle escape key for logout modal
-  useEffect(() => {
-    const handleEscape = (event) => {
-      if (event.key === 'Escape' && showLogoutModal) {
-        setShowLogoutModal(false);
-      }
-    };
-
-    if (showLogoutModal) {
-      document.addEventListener('keydown', handleEscape);
-      return () => document.removeEventListener('keydown', handleEscape);
-    }
-  }, [showLogoutModal]);
-
   const toggleSidebar = () => {
     if (isMobile) {
       setMobileMenuOpen(!mobileMenuOpen);
     } else {
       setOpen(!open);
     }
-  };
-
-  const handleLogoutClick = () => {
-    setShowLogoutModal(true);
-  };
-
-  const handleLogoutConfirm = () => {
-    // Clear any stored tokens or user data
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('userData');
-    sessionStorage.clear();
-    
-    // Redirect to login page
-    navigate('/admin/login');
-    
-    // Close modal
-    setShowLogoutModal(false);
-  };
-
-  const handleLogoutCancel = () => {
-    setShowLogoutModal(false);
   };
 
   return (
@@ -183,11 +146,7 @@ const Layoutadmin = ({ children }) => {
                 <p className="text-white font-medium text-sm">Admin User</p>
                 <p className="text-blue-200 text-xs">Super Admin</p>
               </div>
-              <button 
-                className="text-gray-400 hover:text-white transition-colors"
-                onClick={handleLogoutClick}
-                title="Logout"
-              >
+              <button className="text-gray-400 hover:text-white transition-colors">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                 </svg>
@@ -272,53 +231,6 @@ const Layoutadmin = ({ children }) => {
           {children}
         </div>
       </div>
-
-      {/* Logout Confirmation Modal */}
-      {showLogoutModal && (
-        <div 
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-[9999]"
-          onClick={(e) => e.target === e.currentTarget && handleLogoutCancel()}
-        >
-          <div className="bg-white rounded-xl max-w-md w-full mx-4 shadow-2xl">
-            <div className="p-6">
-              {/* Modal Header */}
-              <div className="flex items-center justify-center mb-4">
-                <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
-                  <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                  </svg>
-                </div>
-              </div>
-              
-              {/* Modal Content */}
-              <div className="text-center mb-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  Konfirmasi Logout
-                </h3>
-                <p className="text-gray-600">
-                  Apakah Anda yakin ingin keluar dari panel admin? Anda perlu login kembali untuk mengakses sistem.
-                </p>
-              </div>
-              
-              {/* Modal Actions */}
-              <div className="flex flex-col sm:flex-row gap-3">
-                <button
-                  onClick={handleLogoutCancel}
-                  className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-medium"
-                >
-                  Batal
-                </button>
-                <button
-                  onClick={handleLogoutConfirm}
-                  className="flex-1 px-4 py-2.5 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
-                >
-                  Ya, Logout
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
