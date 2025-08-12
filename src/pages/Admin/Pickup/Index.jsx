@@ -90,13 +90,16 @@ const PickupManagement = () => {
     try {
       setLoading(true);
       const response = await axios.put(`https://api-mijelin.rakis.my.id/api/user-pickups/${pickupId}`, { status });
-      if (response.data.success) {
+      if (response.status === 200) {
         Swal.fire({
           icon: 'success',
           title: 'Status Updated',
           text: 'The pickup status has been successfully updated!',
           confirmButtonColor: '#3B82F6'
         });
+
+        setShowDetailModal(false);
+
         fetchUserPickups();
         // refresh halaman componen pickup dan agar berubah statusnya
         

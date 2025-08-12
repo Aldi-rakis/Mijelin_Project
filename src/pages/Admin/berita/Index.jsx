@@ -296,9 +296,9 @@ const Index = () => {
                         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                           news.status === 'published' 
                             ? 'bg-green-100 text-green-800' 
-                            : 'bg-yellow-100 text-yellow-800'
+                            : 'bg-green-100 text-yellow-800'
                         }`}>
-                          {news.status === 'published' ? 'Published' : 'Draft'}
+                          {news.status === 'published' ? 'Published' : 'Published'}
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
