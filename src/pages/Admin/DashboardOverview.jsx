@@ -55,13 +55,14 @@ const DashboardOverview = () => {
   socket.on('dashboard-update', (data) => {
     // Memperbarui state secara imutabel
     console.log("Received dashboard updat sokcete:", data);
+    console.log("Current dashboard data before update:", dashboardData);
     setDashboardData(prevData => ({
       ...prevData,
       overview: {
         ...prevData.overview,
         total_oil_transactions: prevData.overview.total_oil_transactions + 1,
         total_oil_weight: prevData.overview.total_oil_weight + data.weight,
-        total_points_earned: prevData.overview.total_points_earned + data.points_earned
+        total_points_earned: Number(prevData.overview.total_points_earned) + Number(data.points_earned)
       },
       recent_activity: {
         ...prevData.recent_activity,
