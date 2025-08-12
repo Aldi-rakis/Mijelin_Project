@@ -68,7 +68,7 @@ const Index = () => {
             user_id: userData.id,
             schedule_id: parseInt(selectedSchedule),
             address: userData.alamat,
-            detail: notes.trim() || null,
+            detail: notes.trim() || "-",
         };
 
         try {
