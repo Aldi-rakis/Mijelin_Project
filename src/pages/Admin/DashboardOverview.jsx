@@ -18,7 +18,7 @@ import {
 } from 'recharts';
 import io from 'socket.io-client';
 
-const SOCKET_URL = import.meta.env.VITE_APP_SOCKET_URL || '';
+const SOCKET_URL = import.meta.env.VITE_APP_SOCKET_URL || 'https://websocket.rakis.my.id/';
 const socket = io(SOCKET_URL, {
   transports: ['websocket'], // paksa websocket full, biar gak fallback ke polling
 });
