@@ -16,7 +16,9 @@ import {
   Pie,
   Cell
 } from 'recharts';
+import io from 'socket.io-client';
 
+const socket = io('http://localhost:3000');
 const DashboardOverview = () => {
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -27,7 +29,7 @@ const DashboardOverview = () => {
       try {
         setLoading(true);
         const response = await axios.get('https://api-mijelin.rakis.my.id/api/dashboard/overview');
-        
+        console.log("Dashboard data fetched:", response.data);
         if (response.data.success) {
           setDashboardData(response.data.data);
         } else {
@@ -43,6 +45,33 @@ const DashboardOverview = () => {
 
     fetchDashboardData();
   }, []);
+
+  useEffect(() => {
+  // Mendengarkan event dari Socket.IO
+  socket.on('dashboard-update', (data) => {
+    // Memperbarui state secara imutabel
+    console.log("Received dashboard updat sokcete:", data);
+    setDashboardData(prevData => ({
+      ...prevData,
+      overview: {
+        ...prevData.overview,
+        total_oil_transactions: prevData.overview.total_oil_transactions + 1
+      },
+    //   recent_activity: {
+    //     ...prevData.recent_activity,
+    //     total_oil_transactions_this_week: prevData.recent_activity.total_oil_transactions_this_week + 1
+    //   }
+    }));
+  });
+
+  // ... (tambahkan listener untuk event lain seperti 'transaction-added')
+
+  // Fungsi cleanup
+  return () => {
+    socket.disconnect();
+  };
+}, []);
+
 
   // Helper function untuk format number
   const formatNumber = (num) => {
